@@ -3,12 +3,12 @@ import styled from "styled-components";
 
 const Main = styled.main`
   padding: 0.5rem;
-  width: 100%;
 `;
 
 const Headline = styled.h1`
   padding: 2rem;
   text-align: center;
+  margin: 0;
 `;
 
 export default function Layout({ children }) {
@@ -17,8 +17,10 @@ export default function Layout({ children }) {
       <Head>
         <title>Leafy</title>
       </Head>
-      <Headline>Leafy</Headline>
-      <Main>{children}</Main>
+      <Main>
+        <Headline>Leafy</Headline>
+        {children}
+      </Main>
     </>
   );
 }
