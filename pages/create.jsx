@@ -17,7 +17,6 @@ export default function CreatePlant() {
       }
 
       const result = await res.json();
-      console.log("new Plant added to db: ", result);
       // Optionally redirect or show success message
     } catch (error) {
       console.error(error);
