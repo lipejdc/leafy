@@ -11,8 +11,6 @@ export const FormContainer = styled.form`
 const fertiliserSeasons = ["Spring", "Summer", "Autumn", "Winter"];
 
 export default function Form({ onSubmit }) {
-  const router = useRouter();
-
   function handleSubmit(event) {
     event.preventDefault();
     const formData = new FormData(event.target);
@@ -26,7 +24,6 @@ export default function Form({ onSubmit }) {
     }
 
     onSubmit(data);
-    router.push("/");
   }
 
   return (

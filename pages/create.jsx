@@ -16,8 +16,8 @@ export default function CreatePlant() {
         throw new Error("Failed to add plant");
       }
 
-      const result = await res.json();
       // Optionally redirect or show success message
+      router.push("/");
     } catch (error) {
       console.error(error);
       alert("Error adding plant");

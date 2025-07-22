@@ -6,7 +6,6 @@ export default async function handler(request, response) {
 
   if (request.method === "GET") {
     const plants = await Plant.find();
-    console.log(plants);
     return response.status(200).json(plants);
   } else if (request.method === "POST") {
     const plantData = request.body;
