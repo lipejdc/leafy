@@ -1,6 +1,7 @@
 import useSWR from "swr";
 import { useRouter } from "next/router";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function DetailsPage() {
   const router = useRouter();
@@ -27,6 +28,8 @@ export default function DetailsPage() {
 
   return (
     <>
+      <Link href="/">← Back to Plant Collection</Link>
+
       <div style={{ position: "relative", width: "100%", height: "400px" }}>
         <Image
           src={plant.imageUrl}
