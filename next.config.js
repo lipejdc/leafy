@@ -13,6 +13,7 @@ const nextConfig = {
 
     return config;
   },
+   domains: ["images.pexels.com"],
 };
 
 module.exports = nextConfig;
