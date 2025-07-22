@@ -7,30 +7,23 @@ export default function DetailsPage() {
   const router = useRouter();
   const { id } = router.query;
 
-  const fetcher = async (url) => {
-    const res = await fetch(url);
-    if (!res.ok) {
-      const error = new Error("Fetch error");
-      error.status = res.status;
-      throw error;
-    }
-    return res.json();
-  };
   const {
     data: plant,
     error,
     isLoading,
-  } = useSWR(id ? `/api/plants/${id}` : null, fetcher);
+  } = useSWR(id ? `/api/plants/${id}` : null);
 
+  if (!id) return <h2>Please select a plant.</h2>;
   if (isLoading) return <h2>Loading ..</h2>;
-  if (error) return <h2> Error loading plant. Please try again later.</h2>;
-  if (!plant) return <h2>Unfortunately no Plant found. </h2>;
+  if (error) return <h2> Error loading plant.</h2>;
+  if (!plant && !isLoading && !error)
+    return <h2>Unfortunately no Plant found. </h2>;
 
   return (
     <>
       <Link href="/">← Back to Plant Collection</Link>
 
-      <div style={{ position: "relative", width: "100%", height: "400px" }}>
+      <div>
         <Image
           src={plant.imageUrl}
           alt={plant.name || "Plant Image"}
