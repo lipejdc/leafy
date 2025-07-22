@@ -1,7 +1,40 @@
+import styled from "styled-components";
+import useSWR from "swr";
+import Card from "../components/Card";
+
+const ListSection = styled.ul`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem 0;
+  padding: 2rem;
+  margin: 0;
+  list-style: none;
+  justify-content: space-evenly;
+`;
+
+const ListItem = styled.li`
+  flex: 1 1 30rem;
+  display: flex;
+  justify-content: center;
+`;
+
 export default function HomePage() {
+  const { data, error, isLoading } = useSWR("/api/plants");
+
+  if (error) return <p>Failed to load plants.</p>;
+  if (isLoading) return <p>Loading...</p>;
+
   return (
-    <div>
-      <h1>Hello from Next.js</h1>
-    </div>
+    <ListSection>
+      {data?.map((plant) => (
+        <ListItem key={plant._id}>
+          <Card
+            name={plant.name}
+            botanicalName={plant.botanicalName}
+            imageUrl={plant.imageUrl}
+          />
+        </ListItem>
+      ))}
+    </ListSection>
   );
 }
