@@ -11,7 +11,6 @@ const StyledCard = styled.article`
 `;
 
 const ImageWrapper = styled.div`
-  position: relative;
   width: 100%;
   aspect-ratio: 4 / 3;
   overflow: hidden;
