@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import Image from "next/image";
+import Link from "next/link";
 
 const StyledCard = styled.article`
   width: 100%;
@@ -12,6 +13,7 @@ const StyledCard = styled.article`
 
 const ImageWrapper = styled.div`
   width: 100%;
+  position: relative;
   aspect-ratio: 4 / 3;
   overflow: hidden;
   margin-bottom: 1rem;
@@ -29,20 +31,23 @@ const BotanicalName = styled.p`
   margin: 0;
 `;
 
-export default function Card({ name, botanicalName, imageUrl }) {
+export default function Card({ name, botanicalName, imageUrl, id }) {
   return (
     <StyledCard>
-      <ImageWrapper>
-        <Image
-          src={imageUrl}
-          alt={`Image of ${name}`}
-          fill
-          style={{ objectFit: "cover" }}
-          sizes="(max-width: 768px) 100vw, 30rem"
-        />
-      </ImageWrapper>
-      <Name>{name}</Name>
-      <BotanicalName>{botanicalName}</BotanicalName>
+      <Link href={`plants/${id}`}>
+        <ImageWrapper>
+          <Image
+            src={imageUrl}
+            alt={`Image of ${name}`}
+            fill
+            style={{ objectFit: "cover" }}
+            sizes="(max-width: 768px) 100vw, 30rem"
+          />
+        </ImageWrapper>
+
+        <Name>{name}</Name>
+        <BotanicalName>{botanicalName}</BotanicalName>
+      </Link>
     </StyledCard>
   );
 }
