@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import useSWR from "swr";
 import Card from "../components/Card";
+import { useRouter } from "next/router";
 
 const ListSection = styled.ul`
   display: flex;
@@ -20,6 +21,7 @@ const ListItem = styled.li`
 
 export default function HomePage() {
   const { data, error, isLoading } = useSWR("/api/plants");
+  const router = useRouter();
 
   if (error) return <p>Failed to load plants.</p>;
   if (isLoading) return <p>Loading...</p>;
@@ -32,6 +34,7 @@ export default function HomePage() {
             name={plant.name}
             botanicalName={plant.botanicalName}
             imageUrl={plant.imageUrl}
+            id={plant._id}
           />
         </ListItem>
       ))}
