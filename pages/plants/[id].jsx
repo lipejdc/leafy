@@ -9,8 +9,7 @@ export default function PlantDetail() {
   const { id } = router.query;
 
   const { data: plant, error } = useSWR(
-    id ? `/api/plants/${id}` : null,
-    (url) => fetch(url).then((res) => res.json())
+    id ? `/api/plants/${id}` : null
   );
 
   if (error) return <div>Error loading plant.</div>;
