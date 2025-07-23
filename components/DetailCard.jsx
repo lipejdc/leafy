@@ -50,8 +50,6 @@ const Details = styled.div`
 `;
 
 export default function DetailCard({ plant }) {
-  if (!plant) return null; // Prevent rendering if plant is undefined
-
   return (
     <StyledDetailCard>
       <ImageWrapper>
