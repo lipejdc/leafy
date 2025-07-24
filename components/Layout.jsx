@@ -8,7 +8,6 @@ const Main = styled.main`
 const Headline = styled.h1`
   padding: 2rem;
   text-align: center;
-  margin: 0;
 `;
 
 export default function Layout({ children }) {
