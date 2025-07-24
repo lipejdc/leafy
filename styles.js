@@ -39,10 +39,12 @@ input, select, textarea {
     margin-bottom: 0.8rem;
 }
 
-  input:focus, select:focus, textarea:focus {
-    border-color: var(--color-primary);
-    outline: none;
-  }
+input:focus, select:focus, textarea:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.35);
+  outline: none;
+}
+
 
   label {
     color: var(--color-primary);

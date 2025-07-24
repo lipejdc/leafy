@@ -2,6 +2,7 @@ import styled from "styled-components";
 import useSWR from "swr";
 import Card from "../components/Card";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 const ListSection = styled.ul`
   display: flex;
@@ -19,25 +20,39 @@ const ListItem = styled.li`
   justify-content: center;
 `;
 
+const StyledButtonContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  max-width: 90%;
+  margin-bottom: 2rem;
+`;
+
 export default function HomePage() {
   const { data, error, isLoading } = useSWR("/api/plants");
-  const router = useRouter();
 
   if (error) return <p>Failed to load plants.</p>;
   if (isLoading) return <p>Loading...</p>;
 
   return (
-    <ListSection>
-      {data?.map((plant) => (
-        <ListItem key={plant._id}>
-          <Card
-            name={plant.name}
-            botanicalName={plant.botanicalName}
-            imageUrl={plant.imageUrl}
-            id={plant._id}
-          />
-        </ListItem>
-      ))}
-    </ListSection>
+    <>
+      <StyledButtonContainer>
+        <Link href={"/create"}>
+          <button> + add Plant</button>
+        </Link>
+      </StyledButtonContainer>
+
+      <ListSection>
+        {data?.map((plant) => (
+          <ListItem key={plant._id}>
+            <Card
+              name={plant.name}
+              botanicalName={plant.botanicalName}
+              imageUrl={plant.imageUrl}
+              id={plant._id}
+            />
+          </ListItem>
+        ))}
+      </ListSection>
+    </>
   );
 }
