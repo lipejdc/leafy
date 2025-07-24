@@ -1,7 +1,5 @@
 import useSWR from "swr";
 import { useRouter } from "next/router";
-import Image from "next/image";
-import styled from "styled-components";
 import DetailCard from "@/components/DetailCard";
 
 export default function PlantDetail() {
@@ -29,7 +27,7 @@ export default function PlantDetail() {
         throw new Error("Failed to delete plant");
       }
 
-       alert("Place deleted successfully!");
+       alert("Plant deleted successfully!");
 
       // Optionally redirect or show success message
       router.push("/");

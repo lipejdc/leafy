@@ -36,7 +36,6 @@ export default function HomePage() {
   return (
     <>
       <StyledButtonContainer>
-        {" "}
         <Link href={"/create"}>
           <button> + add Plant</button>
         </Link>
