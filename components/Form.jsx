@@ -6,8 +6,6 @@ export const FormContainer = styled.form`
   gap: 0.3rem;
 `;
 
-// Removed Input, Select, Textarea, Label styled-components
-
 const fertiliserSeasons = ["Spring", "Summer", "Autumn", "Winter"];
 
 export default function Form({ onSubmit, initialValues = {} }) {
@@ -109,7 +107,7 @@ export default function Form({ onSubmit, initialValues = {} }) {
           defaultValue={initialValues.description || ""}
         ></textarea>
 
-        <button type="submit">{initialValues ? "Edit" : "Submit"}</button>
+        <button type="submit">Submit</button>
       </FormContainer>
     </>
   );
