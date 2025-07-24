@@ -109,7 +109,7 @@ export default function Form({ onSubmit, initialValues = {} }) {
           defaultValue={initialValues.description || ""}
         ></textarea>
 
-        <button type="submit">{initialValues ? "Edit" : "Submit"}</button>
+        <button type="submit">Submit</button>
       </FormContainer>
     </>
   );
