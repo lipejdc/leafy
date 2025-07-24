@@ -14,6 +14,12 @@ export default function PlantDetail() {
   if (!plant) return <div>Loading...</div>;
 
   async function deletePlant() {
+
+     const confirmDelete = window.confirm(
+      "Are you sure you want to delete this plant?"
+    );
+    if (!confirmDelete) return;
+
     try {
       const res = await fetch(`/api/plants/${id}`, {
         method: "DELETE",
@@ -23,11 +29,13 @@ export default function PlantDetail() {
         throw new Error("Failed to delete plant");
       }
 
+       alert("Place deleted successfully!");
+
       // Optionally redirect or show success message
       router.push("/");
     } catch (error) {
-      console.error(error);
-      alert("Error deleting plant");
+      console.error("Error deleting plant:", error);
+      alert("Could not delete the plant. Please try again.");
     }
   }
 

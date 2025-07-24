@@ -21,14 +21,14 @@ const ListItem = styled.li`
 `;
 
 const StyledButtonContainer = styled.div`
-  // move the button to the right
   display: flex;
   justify-content: flex-end;
+  max-width: 90%;
+  margin-bottom: 2rem;
 `;
 
 export default function HomePage() {
   const { data, error, isLoading } = useSWR("/api/plants");
-  const router = useRouter();
 
   if (error) return <p>Failed to load plants.</p>;
   if (isLoading) return <p>Loading...</p>;
