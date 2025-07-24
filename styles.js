@@ -41,7 +41,7 @@ input, select, textarea {
 
 input:focus, select:focus, textarea:focus {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.35); /* Brighter green focus */
+  box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.35);
   outline: none;
 }
 
