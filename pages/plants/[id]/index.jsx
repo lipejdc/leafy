@@ -8,9 +8,7 @@ export default function PlantDetail() {
   const router = useRouter();
   const { id } = router.query;
 
-  const { data: plant, error } = useSWR(
-    id ? `/api/plants/${id}` : null
-  );
+  const { data: plant, error } = useSWR(id ? `/api/plants/${id}` : null);
 
   if (error) return <div>Error loading plant.</div>;
   if (!plant) return <div>Loading...</div>;
@@ -20,7 +18,12 @@ export default function PlantDetail() {
       <button type="button" onClick={() => router.back()}>
         ←
       </button>
+
       <DetailCard plant={plant} />
+
+      <button type="button" onClick={() => router.push(`/plants/${id}/edit`)}>
+        Edit
+      </button>
     </main>
   );
 }
