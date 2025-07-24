@@ -12,8 +12,7 @@ export default function PlantDetail() {
   if (!plant) return <div>Loading...</div>;
 
   async function deletePlant() {
-
-     const confirmDelete = window.confirm(
+    const confirmDelete = window.confirm(
       "Are you sure you want to delete this plant?"
     );
     if (!confirmDelete) return;
@@ -27,7 +26,7 @@ export default function PlantDetail() {
         throw new Error("Failed to delete plant");
       }
 
-       alert("Plant deleted successfully!");
+      alert("Plant deleted successfully!");
 
       // Optionally redirect or show success message
       router.push("/");
@@ -42,7 +41,12 @@ export default function PlantDetail() {
       <button type="button" onClick={() => router.back()}>
         ←
       </button>
+
       <DetailCard plant={plant} />
+
+      <button type="button" onClick={() => router.push(`/plants/${id}/edit`)}>
+        Edit
+      </button>
 
       <button onClick={deletePlant}> delete Plant</button>
     </main>

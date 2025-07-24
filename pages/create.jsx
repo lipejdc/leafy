@@ -1,6 +1,8 @@
 import Form from "@/components/Form";
 import { useRouter } from "next/router";
 
+import { toast } from "sonner";
+
 export default function CreatePlant() {
   const router = useRouter();
 
@@ -16,7 +18,8 @@ export default function CreatePlant() {
         throw new Error("Failed to add plant");
       }
 
-      // Optionally redirect or show success message
+      toast.success("Plant added successfully!"); 
+
       router.push("/");
     } catch (error) {
       console.error(error);

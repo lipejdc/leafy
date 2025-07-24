@@ -6,11 +6,9 @@ export const FormContainer = styled.form`
   gap: 0.3rem;
 `;
 
-// Removed Input, Select, Textarea, Label styled-components
-
 const fertiliserSeasons = ["Spring", "Summer", "Autumn", "Winter"];
 
-export default function Form({ onSubmit }) {
+export default function Form({ onSubmit, initialValues = {} }) {
   function handleSubmit(event) {
     event.preventDefault();
     const formData = new FormData(event.target);
@@ -30,16 +28,39 @@ export default function Form({ onSubmit }) {
     <>
       <FormContainer onSubmit={handleSubmit}>
         <label htmlFor="name">Name</label>
-        <input id="name" name="name" type="text" required />
+        <input
+          id="name"
+          name="name"
+          type="text"
+          required
+          defaultValue={initialValues.name || ""}
+        />
 
         <label htmlFor="botanicalName">Botanical Name</label>
-        <input id="botanicalName" name="botanicalName" type="text" required />
+        <input
+          id="botanicalName"
+          name="botanicalName"
+          type="text"
+          required
+          defaultValue={initialValues.botanicalName || ""}
+        />
 
         <label htmlFor="imageUrl">Image Url</label>
-        <input id="imageUrl" name="imageUrl" type="text" required />
+        <input
+          id="imageUrl"
+          name="imageUrl"
+          type="text"
+          required
+          defaultValue={initialValues.imageUrl || ""}
+        />
 
         <label htmlFor="waterNeed">Water Need</label>
-        <select id="waterNeed" name="waterNeed" required>
+        <select
+          id="waterNeed"
+          name="waterNeed"
+          required
+          defaultValue={initialValues.waterNeed || ""}
+        >
           <option value="">Select water need</option>
           <option value="Low">Low</option>
           <option value="Medium">Medium</option>
@@ -47,7 +68,12 @@ export default function Form({ onSubmit }) {
         </select>
 
         <label htmlFor="lightNeed">Light Need</label>
-        <select id="lightNeed" name="lightNeed" required>
+        <select
+          id="lightNeed"
+          name="lightNeed"
+          required
+          defaultValue={initialValues.lightNeed || ""}
+        >
           <option value="">Select light need</option>
           <option value="Full Sun">Full Sun</option>
           <option value="Partial Shade">Partial Shade</option>
@@ -58,7 +84,14 @@ export default function Form({ onSubmit }) {
         <div>
           {fertiliserSeasons.map((season) => (
             <label key={season} style={{ marginRight: "1rem" }}>
-              <input type="checkbox" name="fertiliserSeason" value={season} />
+              <input
+                type="checkbox"
+                name="fertiliserSeason"
+                value={season}
+                defaultChecked={initialValues.fertiliserSeason?.includes(
+                  season
+                )}
+              />
               {season}
             </label>
           ))}
@@ -71,6 +104,7 @@ export default function Form({ onSubmit }) {
           cols="30"
           rows="5"
           required
+          defaultValue={initialValues.description || ""}
         ></textarea>
 
         <button type="submit">Submit</button>
