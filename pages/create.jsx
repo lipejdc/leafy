@@ -18,7 +18,7 @@ export default function CreatePlant() {
         throw new Error("Failed to add plant");
       }
 
-      toast.success("Plant added successfully!"); // Show success toast
+      toast.success("Plant added successfully!"); 
 
       router.push("/");
     } catch (error) {
