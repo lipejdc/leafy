@@ -27,7 +27,7 @@ const StyledButtonContainer = styled.div`
   margin-bottom: 2rem;
 `;
 
-export default function HomePage( { toggleOwned, isPlantOwned }) {
+export default function HomePage({ toggleOwned }) {
   const { data, error, isLoading } = useSWR("/api/plants");
 
   if (error) return <p>Failed to load plants.</p>;
@@ -37,21 +37,14 @@ export default function HomePage( { toggleOwned, isPlantOwned }) {
     <>
       <StyledButtonContainer>
         <Link href={"/create"}>
-          <button> + add Plant</button>
+          <button>+ add Plant</button>
         </Link>
       </StyledButtonContainer>
 
       <ListSection>
         {data?.map((plant) => (
           <ListItem key={plant._id}>
-            <Card
-              name={plant.name}
-              botanicalName={plant.botanicalName}
-              imageUrl={plant.imageUrl}
-              id={plant._id}
-              isOwned={isPlantOwned(plant._id, plant.isOwned)}
-              toggleOwned={toggleOwned}
-            />
+            <Card plant={plant} toggleOwned={toggleOwned}/>
           </ListItem>
         ))}
       </ListSection>

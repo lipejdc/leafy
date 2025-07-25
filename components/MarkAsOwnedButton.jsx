@@ -13,10 +13,10 @@ const Button = styled.button`
   align-items: center;
   gap: 0.3rem;
 
-  color: ${({ isOwned }) => (isOwned ? "green" : "gray")};
+  color: ${({ $isOwned }) => ($isOwned ? "green" : "gray")};
 
   &:hover {
-    color: ${({ isOwned }) => (isOwned ? "#0a8a0a" : "#666")};
+    color: ${({ $isOwned }) => ($isOwned ? "#0a8a0a" : "#666")};
   }
 
   svg {
@@ -30,11 +30,9 @@ const OwnershipLabel = styled.span`
   letter-spacing: 0.4px;
 `;
 
-
-
 export default function MarkAsOwnedButton({ isOwned, onClick }) {
   return (
-    <Button onClick={onClick} aria-label="Mark as owned" isOwned={isOwned}>
+    <Button onClick={onClick} aria-label="Mark as owned" $isOwned={isOwned}>
       {isOwned ? (
         <>
           <CheckCircle />
@@ -49,4 +47,3 @@ export default function MarkAsOwnedButton({ isOwned, onClick }) {
     </Button>
   );
 }
-

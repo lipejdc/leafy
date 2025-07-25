@@ -33,26 +33,17 @@ const BotanicalName = styled.p`
   margin: 0;
 `;
 
-export default function Card({
-  name,
-  botanicalName,
-  imageUrl,
-  id,
-  isOwned,
-  toggleOwned,
-}) {
+export default function Card({ plant, toggleOwned }) {
   
-
+   const { name, botanicalName, imageUrl, _id, isOwned } = plant;
+  
   return (
     <StyledCard>
       <MarkAsOwnedButton
         isOwned={isOwned}
-        onClick={(e) => {
-          e.preventDefault();
-          toggleOwned(id, isOwned);
-        }}
+        onClick={() => toggleOwned(_id, isOwned)}
       />
-      <Link href={`plants/${id}`}>
+      <Link href={`plants/${_id}`}>
         <ImageWrapper>
           <Image
             src={imageUrl}
@@ -62,7 +53,6 @@ export default function Card({
             sizes="(max-width: 768px) 100vw, 30rem"
           />
         </ImageWrapper>
-
         <Name>{name}</Name>
         <BotanicalName>{botanicalName}</BotanicalName>
       </Link>

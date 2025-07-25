@@ -33,31 +33,24 @@ const Heading = styled.h2`
   margin: 0 0 1rem 5rem;
 `;
 
-export default function MyPlantsPage({ toggleOwned, isPlantOwned }) {
+export default function MyPlantsPage({ toggleOwned }) {
   const { data, error, isLoading } = useSWR("/api/plants");
 
   if (error) return <Message>Failed to load your plants.</Message>;
   if (isLoading) return <Message>Loading your plants...</Message>;
 
-  const ownedPlants = data?.filter((plant) => isPlantOwned(plant._id, plant.isOwned));
+  const ownedPlants = data?.filter((plant) => plant.isOwned);
 
   return (
     <>
-    <Heading>My Plants</Heading>
+      <Heading>My Plants</Heading>
       {ownedPlants.length === 0 ? (
         <Message>{`You haven't marked any plants as owned yet.`}</Message>
       ) : (
         <ListSection>
           {ownedPlants.map((plant) => (
             <ListItem key={plant._id}>
-              <Card
-                name={plant.name}
-                botanicalName={plant.botanicalName}
-                imageUrl={plant.imageUrl}
-                id={plant._id}
-                isOwned
-                toggleOwned={toggleOwned}
-              />
+              <Card plant={plant} toggleOwned={toggleOwned}/>
             </ListItem>
           ))}
         </ListSection>
