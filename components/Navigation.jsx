@@ -6,27 +6,24 @@ const Header = styled.header`
       rgba(0, 0, 0, 0.4),
       rgba(0, 0, 0, 0.4)
     ),
-    url("https://images.pexels.com/photos/212324/pexels-photo-212324.jpeg");
+    url("https://images.pexels.com/photos/4503268/pexels-photo-4503268.jpeg");
   background-size: cover;
   background-position: center;
   color: white;
-  padding: 5rem;
-  text-align: center;
+  height: 30vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   margin-bottom: 2rem;
 `;
 
-const Title = styled.h1`
-  margin: 0 0 3rem;
-  font-size: 2.5rem;
-  font-weight: 700;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
-`;
-
-const Nav = styled.nav`
-  margin-top: 1rem;
+const TopNav = styled.nav`
+  position: absolute;
+  top: 1.5rem;
+  width: 100%;
   display: flex;
   justify-content: center;
-  flex-wrap: wrap;
   gap: 2rem;
 `;
 
@@ -57,15 +54,22 @@ const NavLink = styled(Link)`
   }
 `;
 
+const Title = styled.h1`
+  margin: 0 auto;
+  font-size: 3rem;
+  font-weight: 700;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+`;
+
 export default function Navbar() {
   return (
     <Header>
-      <Title>Leafy</Title>
-      <Nav>
+      <TopNav>
         <NavLink href="/">Home</NavLink>
-        <NavLink href="/collection">My Plants</NavLink>
+        <NavLink href="/myplants">My Plants</NavLink>
         <NavLink href="/collection">Plant of the Day</NavLink>
-      </Nav>
+      </TopNav>
+      <Title>Leafy</Title>
     </Header>
   );
 }
