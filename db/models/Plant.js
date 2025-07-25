@@ -8,6 +8,7 @@ const plantSchema = new mongoose.Schema({
   lightNeed: { type: String },
   fertiliserSeason: [{ type: String }],
   description: { type: String },
+  isOwned: { type: Boolean, default: false },
 });
 
 const Plant = mongoose.models.Plant || mongoose.model("Plant", plantSchema);

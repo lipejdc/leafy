@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import useSWR from "swr";
 import Card from "../components/Card";
-import { useRouter } from "next/router";
 import Link from "next/link";
 
 const ListSection = styled.ul`
@@ -15,9 +14,10 @@ const ListSection = styled.ul`
 `;
 
 const ListItem = styled.li`
-  flex: 1 1 30rem;
   display: flex;
   justify-content: center;
+  width: 30rem;
+  max-width: 90vw;
 `;
 
 const StyledButtonContainer = styled.div`
@@ -27,7 +27,7 @@ const StyledButtonContainer = styled.div`
   margin-bottom: 2rem;
 `;
 
-export default function HomePage() {
+export default function HomePage( { toggleOwned, isPlantOwned }) {
   const { data, error, isLoading } = useSWR("/api/plants");
 
   if (error) return <p>Failed to load plants.</p>;
@@ -49,6 +49,8 @@ export default function HomePage() {
               botanicalName={plant.botanicalName}
               imageUrl={plant.imageUrl}
               id={plant._id}
+              isOwned={isPlantOwned(plant._id, plant.isOwned)}
+              toggleOwned={toggleOwned}
             />
           </ListItem>
         ))}

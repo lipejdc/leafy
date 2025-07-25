@@ -1,8 +1,10 @@
 import styled from "styled-components";
 import Image from "next/image";
 import Link from "next/link";
+import MarkAsOwnedButton from "./MarkAsOwnedButton";
 
 const StyledCard = styled.article`
+  position: relative;
   width: 100%;
   max-width: 30rem;
   border: 1px solid #ccc;
@@ -31,9 +33,25 @@ const BotanicalName = styled.p`
   margin: 0;
 `;
 
-export default function Card({ name, botanicalName, imageUrl, id }) {
+export default function Card({
+  name,
+  botanicalName,
+  imageUrl,
+  id,
+  isOwned,
+  toggleOwned,
+}) {
+  
+
   return (
     <StyledCard>
+      <MarkAsOwnedButton
+        isOwned={isOwned}
+        onClick={(e) => {
+          e.preventDefault();
+          toggleOwned(id, isOwned);
+        }}
+      />
       <Link href={`plants/${id}`}>
         <ImageWrapper>
           <Image
