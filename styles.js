@@ -23,10 +23,6 @@ export default createGlobalStyle`
     margin: 0;
     padding: 0;
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
   }
 
 input, select, textarea {
@@ -61,7 +57,7 @@ input:focus, select:focus, textarea:focus {
     transition: background 0.2s;
   }
 
-  button:hover, button:focus {
+  button:hover {
     background: var(--color-accent);
     color: var(--color-text);
   }
