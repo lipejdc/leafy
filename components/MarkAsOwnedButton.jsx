@@ -1,4 +1,4 @@
-import { CheckCircle, Tag, Circle } from "lucide-react";
+import { CheckCircle, Circle } from "lucide-react";
 import styled from "styled-components";
 
 const Button = styled.button`
@@ -25,18 +25,28 @@ const Button = styled.button`
   }
 `;
 
+const OwnershipLabel = styled.span`
+  font-weight: 700;
+  letter-spacing: 0.4px;
+`;
+
+
+
 export default function MarkAsOwnedButton({ isOwned, onClick }) {
   return (
     <Button onClick={onClick} aria-label="Mark as owned" isOwned={isOwned}>
       {isOwned ? (
         <>
-          <CheckCircle /> Owned
+          <CheckCircle />
+          <OwnershipLabel>Owned</OwnershipLabel>
         </>
       ) : (
         <>
-          <Circle /> Not Owned
+          <Circle />
+          <OwnershipLabel>Not Owned</OwnershipLabel>
         </>
       )}
     </Button>
   );
 }
+
