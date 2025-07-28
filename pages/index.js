@@ -49,8 +49,8 @@ const FilterButton = styled.button`
   font-size: 0.95rem;
 
   &:hover {
-    background: ${({ active }) => (active ? "#eee" : "black")};
-    color: ${({ active }) => (active ? "#333" : "white")};
+    background: black;
+    color: white;
   }
 `;
 
@@ -61,18 +61,20 @@ const EmptyMessage = styled.p`
   margin-top: 2rem;
 `;
 
-const LIGHT_NEEDS = ["All", "Shade", "Partial Shade", "Full Sun"];
+
 
 export default function HomePage({ toggleOwned }) {
   const { data, error, isLoading } = useSWR("/api/plants");
   const [lightFilter, setLightFilter] = useState("All");
 
+  const LIGHT_NEEDS = data
+  ? ["All", ...Array.from(new Set(data.map((p) => p.lightNeed)))]
+  : ["All"];
+
   const filteredPlants =
     lightFilter === "All"
       ? data
-      : data?.filter((plant) => {
-          return plant.lightNeed === lightFilter;
-        });
+      : data?.filter((plant) => plant.lightNeed === lightFilter);
 
   if (error) return <p>Failed to load plants.</p>;
   if (isLoading) return <p>Loading...</p>;
@@ -93,7 +95,7 @@ export default function HomePage({ toggleOwned }) {
             <FilterButton
               key={need}
               onClick={() =>
-                setLightFilter(lightFilter === need ? "All" : need)
+                setLightFilter(need)
               }
               active={lightFilter === need}
             >
