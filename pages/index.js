@@ -64,17 +64,22 @@ const EmptyMessage = styled.p`
 export default function HomePage({ toggleOwned }) {
   const { data, error, isLoading } = useSWR("/api/plants");
   const [lightFilter, setLightFilter] = useState("All");
+  const [waterFilter, setWaterFilter] = useState("All");
 
   //Get unique lightNeed values from data (like "Shade", "Full Sun"), plus "All" at the start
   //Uses Set to remove duplicates and Array.from to turn it back into an array
   const LIGHT_NEEDS = data
     ? ["All", ...Array.from(new Set(data.map((p) => p.lightNeed)))]
     : ["All"];
+  const WATER_NEEDS = data
+    ? ["All", ...Array.from(new Set(data.map((p) => p.waterNeed)))]
+    : ["All"];
 
-  const filteredPlants =
-    lightFilter === "All"
-      ? data
-      : data?.filter((plant) => plant.lightNeed === lightFilter);
+  const filteredPlants = data?.filter(
+    (plant) =>
+      (lightFilter === "All" || plant.lightNeed === lightFilter) &&
+      (waterFilter === "All" || plant.waterNeed === waterFilter)
+  );
 
   if (error) return <p>Failed to load plants.</p>;
   if (isLoading) return <p>Loading...</p>;
@@ -89,18 +94,26 @@ export default function HomePage({ toggleOwned }) {
 
       <FilterBar>
         <FilterLabel>Filter by light needs:</FilterLabel>
+        {LIGHT_NEEDS.map((need) => (
+          <FilterButton
+            key={need}
+            onClick={() => setLightFilter(lightFilter === need ? "All" : need)}
+            active={lightFilter === need}
+          >
+            {need}
+          </FilterButton>
+        ))}
 
-        {LIGHT_NEEDS.map((need) => {
-          return (
-            <FilterButton
-              key={need}
-              onClick={() => setLightFilter(need)}
-              active={lightFilter === need}
-            >
-              {need}
-            </FilterButton>
-          );
-        })}
+        <FilterLabel>Filter by water needs:</FilterLabel>
+        {WATER_NEEDS.map((need) => (
+          <FilterButton
+            key={need}
+            onClick={() => setWaterFilter(waterFilter === need ? "All" : need)}
+            active={waterFilter === need}
+          >
+            {need}
+          </FilterButton>
+        ))}
       </FilterBar>
 
       {filteredPlants?.length === 0 ? (
