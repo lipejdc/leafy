@@ -45,33 +45,22 @@ const LightNeedWrapper = styled.div`
 export default function Card({ plant, toggleOwned }) {
   const { name, botanicalName, imageUrl, _id, isOwned, lightNeed } = plant;
 
-  // Render 3 icons based on the lightNeed string directly
-  let lightIcons;
-  if (lightNeed === "Full Sun") {
-    lightIcons = [
-      <Sun key={0} fill="gold" color="gold" size={20} />,
-      <Sun key={1} fill="gold" color="gold" size={20} />,
-      <Sun key={2} fill="gold" color="gold" size={20} />,
-    ];
-  } else if (lightNeed === "Partial Shade") {
-    lightIcons = [
-      <Sun key={0} fill="gold" color="gold" size={20} />,
-      <Sun key={1} fill="gold" color="gold" size={20} />,
-      <Sun key={2} fill="none" color="#ccc" size={20} />,
-    ];
-  } else if (lightNeed === "Shade") {
-    lightIcons = [
-      <Sun key={0} fill="gold" color="gold" size={20} />,
-      <Sun key={1} fill="none" color="#ccc" size={20} />,
-      <Sun key={2} fill="none" color="#ccc" size={20} />,
-    ];
-  } else {
-    lightIcons = [
-      <Sun key={0} fill="none" color="#ccc" size={20} />,
-      <Sun key={1} fill="none" color="#ccc" size={20} />,
-      <Sun key={2} fill="none" color="#ccc" size={20} />,
-    ];
-  }
+ const fillCount = {
+    "Full Sun": 3,
+    "Partial Shade": 2,
+    "Shade": 1,
+  };
+
+  const filled = fillCount[lightNeed] || 0;
+
+  const lightIcons = [0, 1, 2].map((i) => (
+    <Sun
+      key={i}
+      fill={i < filled ? "gold" : "none"}
+      color={i < filled ? "gold" : "#ccc"}
+      size={20}
+    />
+  ));
 
   return (
     <StyledCard>

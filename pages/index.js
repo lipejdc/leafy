@@ -58,7 +58,7 @@ const LIGHT_NEEDS = ["All", "Shade", "Partial Shade", "Full Sun"];
 
 export default function HomePage({ toggleOwned }) {
   const { data, error, isLoading } = useSWR("/api/plants");
-  const [lightFilter, setLightFilter] = useState("Shade");
+  const [lightFilter, setLightFilter] = useState("All");
 
   const filteredPlants =
     lightFilter === "All"
