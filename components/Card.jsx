@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Image from "next/image";
 import Link from "next/link";
 import MarkAsOwnedButton from "./MarkAsOwnedButton";
+import { Sun } from "lucide-react";
 
 const StyledCard = styled.article`
   position: relative;
@@ -33,10 +34,45 @@ const BotanicalName = styled.p`
   margin: 0;
 `;
 
+const LightNeedWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.2rem;
+  margin-top: 0.5rem;
+`;
+
 export default function Card({ plant, toggleOwned }) {
-  
-   const { name, botanicalName, imageUrl, _id, isOwned } = plant;
-  
+  const { name, botanicalName, imageUrl, _id, isOwned, lightNeed } = plant;
+
+  // Render 3 icons based on the lightNeed string directly
+  let lightIcons;
+  if (lightNeed === "Full Sun") {
+    lightIcons = [
+      <Sun key={0} fill="gold" color="gold" size={20} />,
+      <Sun key={1} fill="gold" color="gold" size={20} />,
+      <Sun key={2} fill="gold" color="gold" size={20} />,
+    ];
+  } else if (lightNeed === "Partial Shade") {
+    lightIcons = [
+      <Sun key={0} fill="gold" color="gold" size={20} />,
+      <Sun key={1} fill="gold" color="gold" size={20} />,
+      <Sun key={2} fill="none" color="#ccc" size={20} />,
+    ];
+  } else if (lightNeed === "Shade") {
+    lightIcons = [
+      <Sun key={0} fill="gold" color="gold" size={20} />,
+      <Sun key={1} fill="none" color="#ccc" size={20} />,
+      <Sun key={2} fill="none" color="#ccc" size={20} />,
+    ];
+  } else {
+    lightIcons = [
+      <Sun key={0} fill="none" color="#ccc" size={20} />,
+      <Sun key={1} fill="none" color="#ccc" size={20} />,
+      <Sun key={2} fill="none" color="#ccc" size={20} />,
+    ];
+  }
+
   return (
     <StyledCard>
       <MarkAsOwnedButton
@@ -55,6 +91,7 @@ export default function Card({ plant, toggleOwned }) {
         </ImageWrapper>
         <Name>{name}</Name>
         <BotanicalName>{botanicalName}</BotanicalName>
+        <LightNeedWrapper>{lightIcons}</LightNeedWrapper>
       </Link>
     </StyledCard>
   );
