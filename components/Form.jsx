@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import styled from "styled-components";
+import { toast } from "sonner";
 
 export const FormContainer = styled.form`
   display: grid;
@@ -17,7 +18,29 @@ export default function Form({ onSubmit, initialValues = {} }) {
 
     // Custom validation: at least one fertiliserSeason checkbox checked
     if (data.fertiliserSeason.length === 0) {
-      alert("Please select at least one fertiliser season.");
+      toast.error("Please select at least one fertiliser season.", {
+        position: "top-center",
+      });
+      return;
+    }
+
+    try {
+      new URL(data.imageUrl);
+    } catch {
+      toast.error("Please enter a valid URL (including https//...)", {
+        position: "top-center",
+      });
+
+      return;
+    }
+
+    const imagePattern = /\.(jpeg|jpg|gif|png|webp)$/i;
+    if (!imagePattern.test(data.imageUrl)) {
+      toast.error(
+        "Please enter a valid image URL ending with .jpg, .jpeg, .png, .gif, or .webp",
+        { position: "top-center" }
+      );
+
       return;
     }
 
