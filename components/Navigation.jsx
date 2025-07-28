@@ -67,7 +67,7 @@ export default function Navbar() {
       <TopNav>
         <NavLink href="/">Home</NavLink>
         <NavLink href="/myplants">My Plants</NavLink>
-        <NavLink href="/collection">Plant of the Day</NavLink>
+        {/* <NavLink href="/collection">Plant of the Day</NavLink> */}
       </TopNav>
       <Title>Leafy</Title>
     </Header>
