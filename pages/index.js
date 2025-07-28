@@ -54,6 +54,13 @@ const FilterButton = styled.button`
   }
 `;
 
+const EmptyMessage = styled.p`
+  text-align: center;
+  font-size: 1.1rem;
+  color: #777;
+  margin-top: 2rem;
+`;
+
 const LIGHT_NEEDS = ["All", "Shade", "Partial Shade", "Full Sun"];
 
 export default function HomePage({ toggleOwned }) {
@@ -96,13 +103,17 @@ export default function HomePage({ toggleOwned }) {
         })}
       </FilterBar>
 
-      <ListSection>
-        {filteredPlants?.map((plant) => (
-          <ListItem key={plant._id}>
-            <Card plant={plant} toggleOwned={toggleOwned} />
-          </ListItem>
-        ))}
-      </ListSection>
+      {filteredPlants?.length === 0 ? (
+        <EmptyMessage>No plants match this filter 🌿</EmptyMessage>
+      ) : (
+        <ListSection>
+          {filteredPlants.map((plant) => (
+            <ListItem key={plant._id}>
+              <Card plant={plant} toggleOwned={toggleOwned} />
+            </ListItem>
+          ))}
+        </ListSection>
+      )}
     </>
   );
 }
