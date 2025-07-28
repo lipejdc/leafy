@@ -2,9 +2,10 @@ import Link from "next/link";
 import styled from "styled-components";
 
 const Header = styled.header`
-  background-image: linear-gradient(
+   background-image: linear-gradient(
+      to bottom,
       rgba(0, 0, 0, 0.4),
-      rgba(0, 0, 0, 0.4)
+      rgba(0, 0, 0, 0.2)
     ),
     url("https://images.pexels.com/photos/4503268/pexels-photo-4503268.jpeg");
   background-size: cover;
@@ -67,7 +68,6 @@ export default function Navbar() {
       <TopNav>
         <NavLink href="/">Home</NavLink>
         <NavLink href="/myplants">My Plants</NavLink>
-        {/* <NavLink href="/collection">Plant of the Day</NavLink> */}
       </TopNav>
       <Title>Leafy</Title>
     </Header>
