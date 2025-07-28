@@ -61,15 +61,15 @@ const EmptyMessage = styled.p`
   margin-top: 2rem;
 `;
 
-
-
 export default function HomePage({ toggleOwned }) {
   const { data, error, isLoading } = useSWR("/api/plants");
   const [lightFilter, setLightFilter] = useState("All");
 
+  //Get unique lightNeed values from data (like "Shade", "Full Sun"), plus "All" at the start
+  //Uses Set to remove duplicates and Array.from to turn it back into an array
   const LIGHT_NEEDS = data
-  ? ["All", ...Array.from(new Set(data.map((p) => p.lightNeed)))]
-  : ["All"];
+    ? ["All", ...Array.from(new Set(data.map((p) => p.lightNeed)))]
+    : ["All"];
 
   const filteredPlants =
     lightFilter === "All"
@@ -94,9 +94,7 @@ export default function HomePage({ toggleOwned }) {
           return (
             <FilterButton
               key={need}
-              onClick={() =>
-                setLightFilter(need)
-              }
+              onClick={() => setLightFilter(need)}
               active={lightFilter === need}
             >
               {need}
