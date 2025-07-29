@@ -1,39 +1,15 @@
 import useSWR from "swr";
 import { useState } from "react";
 import styled from "styled-components";
-import Card from "../components/Card";
 import Link from "next/link";
-import FilterBar from "../components/FilterBar"; // Imported component
-
-const ListSection = styled.ul`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2rem 0;
-  padding: 2rem;
-  margin: 0;
-  list-style: none;
-  justify-content: space-evenly;
-`;
-
-const ListItem = styled.li`
-  display: flex;
-  justify-content: center;
-  width: 30rem;
-  max-width: 90vw;
-`;
+import PlantList from "@/components/PlantList";
+import FilterBar from "../components/FilterBar";
 
 const StyledButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
   max-width: 90%;
   margin-bottom: 2rem;
-`;
-
-const EmptyMessage = styled.p`
-  text-align: center;
-  font-size: 1.1rem;
-  color: #777;
-  margin-top: 2rem;
 `;
 
 export default function HomePage({ toggleOwned }) {
@@ -74,17 +50,11 @@ export default function HomePage({ toggleOwned }) {
         setWaterFilter={setWaterFilter}
       />
 
-      {filteredPlants?.length === 0 ? (
-        <EmptyMessage>No plants match this filter 🌿</EmptyMessage>
-      ) : (
-        <ListSection>
-          {filteredPlants.map((plant) => (
-            <ListItem key={plant._id}>
-              <Card plant={plant} toggleOwned={toggleOwned} />
-            </ListItem>
-          ))}
-        </ListSection>
-      )}
+      <PlantList
+        plants={filteredPlants}
+        toggleOwned={toggleOwned}
+        emptyMessage="No plants match this filter 🌿"
+      />
     </>
   );
 }
