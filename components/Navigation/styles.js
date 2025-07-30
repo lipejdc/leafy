@@ -1,7 +1,7 @@
-import Link from "next/link";
 import styled from "styled-components";
+import Link from "next/link";
 
-const Header = styled.header`
+export const Header = styled.header`
    background-image: linear-gradient(
       to bottom,
       rgba(0, 0, 0, 0.4),
@@ -19,7 +19,7 @@ const Header = styled.header`
   margin-bottom: 2rem;
 `;
 
-const TopNav = styled.nav`
+export const TopNav = styled.nav`
   position: absolute;
   top: 1.5rem;
   width: 100%;
@@ -28,7 +28,7 @@ const TopNav = styled.nav`
   gap: 2rem;
 `;
 
-const NavLink = styled(Link)`
+export const NavLink = styled(Link)`
   color: white;
   font-weight: bold;
   text-decoration: none;
@@ -55,21 +55,9 @@ const NavLink = styled(Link)`
   }
 `;
 
-const Title = styled.h1`
+export const Title = styled.h1`
   margin: 0 auto;
   font-size: 3rem;
   font-weight: 700;
   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
 `;
-
-export default function Navbar() {
-  return (
-    <Header>
-      <TopNav>
-        <NavLink href="/">Home</NavLink>
-        <NavLink href="/myplants">My Plants</NavLink>
-      </TopNav>
-      <Title>Leafy</Title>
-    </Header>
-  );
-}

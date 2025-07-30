@@ -1,10 +1,6 @@
-import styled from "styled-components";
 import { toast } from "sonner";
+import * as styles from "./styles";
 
-export const FormContainer = styled.form`
-  display: grid;
-  gap: 0.3rem;
-`;
 
 const fertiliserSeasons = ["Spring", "Summer", "Autumn", "Winter"];
 
@@ -48,7 +44,7 @@ export default function Form({ onSubmit, initialValues = {} }) {
 
   return (
     <>
-      <FormContainer onSubmit={handleSubmit}>
+      <styles.FormContainer onSubmit={handleSubmit}>
         <label htmlFor="name">Name</label>
         <input
           id="name"
@@ -130,7 +126,7 @@ export default function Form({ onSubmit, initialValues = {} }) {
         ></textarea>
 
         <button type="submit">Submit</button>
-      </FormContainer>
+      </styles.FormContainer>
     </>
   );
 }

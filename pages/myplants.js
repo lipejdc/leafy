@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import useSWR from "swr";
-import Card from "../components/Card";
+import Card from "@/components/Card/Card";
 
 const ListSection = styled.ul`
   display: flex;

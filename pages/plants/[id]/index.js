@@ -1,6 +1,6 @@
 import useSWR from "swr";
 import { useRouter } from "next/router";
-import DetailCard from "@/components/DetailCard";
+import DetailCard from "@/components/DetailCard/DetailCard";
 
 export default function PlantDetail() {
   const router = useRouter();
