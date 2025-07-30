@@ -3,8 +3,8 @@ import useSWR from "swr";
 import Link from "next/link";
 import styled from "styled-components";
 import SearchBar from "@/components/SearchBar/SearchBar";
-import FilterBar from "../components/FilterBar/FilterBar";
-import PlantList from "../components/PlantList/PlantList";
+import FilterBar from "@/components/FilterBar/FilterBar";
+import PlantList from "@/components/PlantList/PlantList";
 
 const StyledButtonContainer = styled.div`
   display: flex;

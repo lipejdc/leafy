@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const StyledCard = styled.article`
+export const StyledCard = styled.article`
   position: relative;
   width: 100%;
   max-width: 30rem;
@@ -10,7 +10,7 @@ const StyledCard = styled.article`
   padding-bottom: 1rem;
 `;
 
-const ImageWrapper = styled.div`
+export const ImageWrapper = styled.div`
   width: 100%;
   position: relative;
   aspect-ratio: 4 / 3;
@@ -18,19 +18,19 @@ const ImageWrapper = styled.div`
   margin-bottom: 1rem;
 `;
 
-const Name = styled.h2`
+export const Name = styled.h2`
   font-size: 1.25rem;
   margin: 0 0 0.3rem;
 `;
 
-const BotanicalName = styled.p`
+export const BotanicalName = styled.p`
   font-size: 1rem;
   color: #555;
   font-style: italic;
   margin: 0;
 `;
 
-const LightNeedWrapper = styled.div`
+export const LightNeedWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -38,7 +38,7 @@ const LightNeedWrapper = styled.div`
   margin-top: 0.5rem;
 `;
 
-const WaterNeedWrapper = styled.div`
+export const WaterNeedWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;

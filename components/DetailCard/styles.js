@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const StyledDetailCard = styled.section`
+export const StyledDetailCard = styled.section`
   background: white;
   border-radius: 1rem;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
@@ -29,7 +29,7 @@ const StyledDetailCard = styled.section`
   }
 `;
 
-const ImageWrapper = styled.div`
+export const ImageWrapper = styled.div`
   width: 100%;
   max-width: 400px;
   aspect-ratio: 4 / 3;
@@ -44,6 +44,6 @@ const ImageWrapper = styled.div`
   }
 `;
 
-const Details = styled.div`
+export const Details = styled.div`
   width: 100%;
 `;

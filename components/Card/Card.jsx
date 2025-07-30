@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import MarkAsOwnedButton from "./MarkAsOwnedButton";
+import MarkAsOwnedButton from "../MarkAsOwnedButton/MarkAsOwnedButton";
 import { Sun, Droplet } from "lucide-react";
 import * as styles from "./styles";
 

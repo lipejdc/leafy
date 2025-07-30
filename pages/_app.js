@@ -1,8 +1,7 @@
 import GlobalStyle from "../styles";
 import { SWRConfig, mutate } from "swr";
-import Layout from "@/components/Layout";
+import Layout from "@/components/Layout/Layout";
 import { Toaster } from "sonner";
-import { useOptimistic } from "react";
 
 
 export default function App({ Component, pageProps }) {

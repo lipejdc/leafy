@@ -1,6 +1,6 @@
 import * as styles from "./styles";
 
-export default function Navbar() {
+export default function Navigation() {
   return (
     <styles.Header>
       <styles.TopNav>

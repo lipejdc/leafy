@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const ListSection = styled.ul`
+export const ListSection = styled.ul`
   display: flex;
   flex-wrap: wrap;
   gap: 2rem 0;
@@ -10,14 +10,14 @@ const ListSection = styled.ul`
   justify-content: space-evenly;
 `;
 
-const ListItem = styled.li`
+export const ListItem = styled.li`
   display: flex;
   justify-content: center;
   width: 30rem;
   max-width: 90vw;
 `;
 
-const EmptyMessage = styled.p`
+export const EmptyMessage = styled.p`
   text-align: center;
   font-size: 1.1rem;
   color: #777;

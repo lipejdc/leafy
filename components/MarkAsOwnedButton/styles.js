@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const Button = styled.button`
+export const Button = styled.button`
   position: absolute;
   background: none;
   top: 0.5rem;
@@ -24,7 +24,7 @@ const Button = styled.button`
   }
 `;
 
-const OwnershipLabel = styled.span`
+export const OwnershipLabel = styled.span`
   font-weight: 700;
   letter-spacing: 0.4px;
 `;

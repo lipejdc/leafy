@@ -1,13 +1,13 @@
 import styled from "styled-components";
 
-const FilterBarWrapper = styled.div`
+export const FilterBarWrapper = styled.div`
   display: flex;
   gap: 0.5rem;
   margin: 1rem 2rem 0 2rem;
   flex-wrap: wrap;
 `;
 
-const FilterLabel = styled.div`
+export const FilterLabel = styled.div`
   font-size: 1rem;
   color: #666;
   margin-bottom: 0.5rem;
@@ -15,7 +15,7 @@ const FilterLabel = styled.div`
   width: 100%;
 `;
 
-const FilterButton = styled.button`
+export const FilterButton = styled.button`
   background: ${({ active }) => (active ? "black" : "#eee")};
   color: ${({ active }) => (active ? "white" : "#333")};
   border-radius: 999px;
