@@ -13,17 +13,6 @@ const StyledButtonContainer = styled.div`
   margin: 2rem auto 1rem;
 `;
 
-const SearchInput = styled.input`
-  width: 90%;
-  max-width: 500px;
-  margin: 0 auto 1rem;
-  display: block;
-  padding: 0.6rem 1rem;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-`;
-
 export default function HomePage({ toggleOwned }) {
   const { data, error, isLoading } = useSWR("/api/plants");
   const [lightFilter, setLightFilter] = useState("All");
@@ -33,8 +22,8 @@ export default function HomePage({ toggleOwned }) {
   if (error) return <p>Failed to load plants.</p>;
   if (isLoading) return <p>Loading...</p>;
 
-  const LIGHT_NEEDS = ["All", ...new Set(data.map((p) => p.lightNeed))];
-  const WATER_NEEDS = ["All", ...new Set(data.map((p) => p.waterNeed))];
+  const LIGHT_NEEDS = ["All", ...new Set(data.map((plant) => plant.lightNeed))];
+  const WATER_NEEDS = ["All", ...new Set(data.map((plant) => plant.waterNeed))];
 
   const filteredPlants = data
     .filter(
@@ -46,8 +35,8 @@ export default function HomePage({ toggleOwned }) {
       if (!searchQuery) return true;
       const query = searchQuery.toLowerCase();
       return (
-        plant.name.toLowerCase().includes(query) ||
-        plant.botanicalName?.toLowerCase().includes(query)
+        plant.name.toLowerCase().startsWith(query) ||
+        plant.botanicalName?.toLowerCase().startsWith(query)
       );
     });
 
