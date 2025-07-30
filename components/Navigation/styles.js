@@ -1,5 +1,5 @@
-import Link from "next/link";
 import styled from "styled-components";
+import Link from "next/link";
 
 const Header = styled.header`
    background-image: linear-gradient(
@@ -61,15 +61,3 @@ const Title = styled.h1`
   font-weight: 700;
   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
 `;
-
-export default function Navbar() {
-  return (
-    <Header>
-      <TopNav>
-        <NavLink href="/">Home</NavLink>
-        <NavLink href="/myplants">My Plants</NavLink>
-      </TopNav>
-      <Title>Leafy</Title>
-    </Header>
-  );
-}

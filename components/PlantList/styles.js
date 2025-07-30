@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import Card from "./Card";
 
 const ListSection = styled.ul`
   display: flex;
@@ -24,19 +23,3 @@ const EmptyMessage = styled.p`
   color: #777;
   margin-top: 2rem;
 `;
-
-export default function PlantList({ plants, toggleOwned, emptyMessage }) {
-  if (!plants.length) {
-    return <EmptyMessage>{emptyMessage || "No plants found 🌿"}</EmptyMessage>;
-  }
-
-  return (
-    <ListSection>
-      {plants.map((plant) => (
-        <ListItem key={plant._id}>
-          <Card plant={plant} toggleOwned={toggleOwned} />
-        </ListItem>
-      ))}
-    </ListSection>
-  );
-}

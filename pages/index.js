@@ -2,9 +2,9 @@ import { useState } from "react";
 import useSWR from "swr";
 import Link from "next/link";
 import styled from "styled-components";
-import SearchBar from "@/components/SearchBar";
-import FilterBar from "../components/FilterBar";
-import PlantList from "../components/PlantList";
+import SearchBar from "@/components/SearchBar/SearchBar";
+import FilterBar from "../components/FilterBar/FilterBar";
+import PlantList from "../components/PlantList/PlantList";
 
 const StyledButtonContainer = styled.div`
   display: flex;

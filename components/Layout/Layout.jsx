@@ -1,10 +1,6 @@
 import Head from "next/head";
-import styled from "styled-components";
 import Navigation from "./Navigation"
-
-const Main = styled.main`
-  padding: 0.5rem;
-`;
+import * as styles from "./styles";
 
 export default function Layout({ children }) {
   return (
@@ -13,9 +9,9 @@ export default function Layout({ children }) {
         <title>Leafy</title>
       </Head>
       <Navigation/>
-      <Main>
+      <styles.Main>
         {children}
-      </Main>
+      </styles.Main>
     </>
   );
 }

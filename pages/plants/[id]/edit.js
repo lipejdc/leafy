@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import useSWR from "swr";
-import Form from "@/components/Form";
+import Form from "@/components/Form/Form";
 import { toast } from "sonner";
 
 export default function EditPlant() {
