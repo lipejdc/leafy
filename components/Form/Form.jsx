@@ -23,7 +23,7 @@ function validateImageFile(file) {
 export default function Form({ onSubmit, initialValues = {} }) {
   const [imageFile, setImageFile] = useState(null);
   const [uploading, setUploading] = useState(false);
-  const [previewUrl, setPreviewUrl] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(initialValues.imageUrl);
 
   async function handleSubmit(event) {
     event.preventDefault();
