@@ -5,7 +5,7 @@ const nextConfig = {
   },
   reactStrictMode: true,
   images: {
-    domains: ["images.pexels.com"],
+    domains: ["images.pexels.com", "res.cloudinary.com"],
   },
   webpack(config) {
     config.module.rules.push({
