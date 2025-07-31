@@ -33,13 +33,9 @@ const Heading = styled.h2`
   margin: 0 0 1rem 5rem;
 `;
 
-export default function MyPlantsPage({ toggleOwned }) {
-  const { data, error, isLoading } = useSWR("/api/plants");
+export default function MyPlantsPage({ toggleOwned, plants }) {
 
-  if (error) return <Message>Failed to load your plants.</Message>;
-  if (isLoading) return <Message>Loading your plants...</Message>;
-
-  const ownedPlants = data?.filter((plant) => plant.isOwned);
+  const ownedPlants = plants?.filter((plant) => plant.isOwned);
 
   return (
     <>

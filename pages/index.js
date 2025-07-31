@@ -13,19 +13,17 @@ const StyledButtonContainer = styled.div`
   margin: 2rem auto 1rem;
 `;
 
-export default function HomePage({ toggleOwned }) {
-  const { data, error, isLoading } = useSWR("/api/plants");
+export default function HomePage({ toggleOwned, plants }) {
   const [lightFilter, setLightFilter] = useState("All");
   const [waterFilter, setWaterFilter] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
 
-  if (error) return <p>Failed to load plants.</p>;
-  if (isLoading) return <p>Loading...</p>;
+  console.log(plants);
 
-  const LIGHT_NEEDS = ["All", ...new Set(data.map((plant) => plant.lightNeed))];
-  const WATER_NEEDS = ["All", ...new Set(data.map((plant) => plant.waterNeed))];
+  const LIGHT_NEEDS = ["All", ...new Set(plants.map((plant) => plant.lightNeed))];
+  const WATER_NEEDS = ["All", ...new Set(plants.map((plant) => plant.waterNeed))];
 
-  const filteredPlants = data
+  const filteredPlants = plants
     .filter(
       (plant) =>
         (lightFilter === "All" || plant.lightNeed === lightFilter) &&
