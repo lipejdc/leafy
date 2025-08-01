@@ -1,6 +1,6 @@
 import Form from "@/components/Form/Form";
 import { useRouter } from "next/router";
-
+import { mutate } from "swr";
 import { toast } from "sonner";
 
 export default function CreatePlant() {
@@ -18,7 +18,8 @@ export default function CreatePlant() {
         throw new Error("Failed to add plant");
       }
 
-      toast.success("Plant added successfully!"); 
+      toast.success("Plant added successfully!");
+      await mutate("/api/plants");
 
       router.push("/");
     } catch (error) {

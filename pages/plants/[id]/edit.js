@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import useSWR from "swr";
+import useSWR, { mutate } from "swr";
 import Form from "@/components/Form/Form";
 import { toast } from "sonner";
 
@@ -16,6 +16,10 @@ export default function EditPlant() {
         body: JSON.stringify(updatedPlant),
       });
       if (!res.ok) throw new Error("Failed to update plant");
+
+      //Refetch the plant list to update homepage
+      await mutate("/api/plants");
+
       toast.success("Plant updated successfully!");
       router.push(`/plants/${id}`);
     } catch (err) {
