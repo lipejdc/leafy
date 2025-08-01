@@ -31,12 +31,10 @@ export default async function handler(req, res) {
     // Validate file type
     const validTypes = ["image/jpeg", "image/png", "image/gif", "image/webp"];
     if (!validTypes.includes(file.mimetype)) {
-      return res
-        .status(400)
-        .json({
-          error:
-            "Invalid file type. Only JPG, PNG, GIF, or WEBP images are allowed.",
-        });
+      return res.status(400).json({
+        error:
+          "Invalid file type. Only JPG, PNG, GIF, or WEBP images are allowed.",
+      });
     }
 
     // Validate file size (max 5MB)
