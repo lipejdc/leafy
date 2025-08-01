@@ -1,12 +1,34 @@
 import { toast } from "sonner";
 import * as styles from "./styles";
-
+import { useState } from "react";
 
 const fertiliserSeasons = ["Spring", "Summer", "Autumn", "Winter"];
 
+// --- Image validation helper ---
+function validateImageFile(file) {
+  const validTypes = ["image/jpeg", "image/png", "image/gif", "image/webp"];
+  const maxSize = 5 * 1024 * 1024; // 5MB
+
+  if (!validTypes.includes(file.type)) {
+    toast.error("Only JPG, PNG, GIF, or WEBP images are allowed.");
+    return false;
+  }
+  if (file.size > maxSize) {
+    toast.error("Image must be smaller than 5MB.");
+    return false;
+  }
+  return true;
+}
+
 export default function Form({ onSubmit, initialValues = {} }) {
-  function handleSubmit(event) {
+  const [imageFile, setImageFile] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState(initialValues.imageUrl);
+
+  async function handleSubmit(event) {
     event.preventDefault();
+    setUploading(true);
+
     const formData = new FormData(event.target);
     const data = Object.fromEntries(formData);
     data.fertiliserSeason = formData.getAll("fertiliserSeason");
@@ -16,29 +38,59 @@ export default function Form({ onSubmit, initialValues = {} }) {
       toast.error("Please select at least one fertiliser season.", {
         position: "top-center",
       });
+      setUploading(false);
       return;
     }
 
-    try {
-      new URL(data.imageUrl);
-    } catch {
-      toast.error("Please enter a valid URL (including https//...)", {
+    let imageUrl = initialValues.imageUrl || "";
+
+    // Upload image if a new file is selected
+    if (imageFile) {
+      const uploadData = new FormData();
+      uploadData.append("file", imageFile);
+
+      try {
+        const res = await fetch("/api/upload", {
+          method: "POST",
+          body: uploadData,
+        });
+        const resultJson = await res.json();
+        if (res.ok) {
+          imageUrl = resultJson.url;
+        } else {
+          toast.error(resultJson.error || "Image upload failed");
+          setUploading(false);
+          return;
+        }
+      } catch (err) {
+        toast.error("Image upload failed");
+        setUploading(false);
+        return;
+      }
+    }
+
+    // If no image is available, show error
+    if (!imageUrl) {
+      toast.error("Please upload an image.", {
         position: "top-center",
       });
-
+      setUploading(false);
       return;
     }
 
-    const imagePattern = /\.(jpeg|jpg|gif|png|webp)$/i;
-    if (!imagePattern.test(data.imageUrl)) {
-      toast.error(
-        "Please enter a valid image URL ending with .jpg, .jpeg, .png, .gif, or .webp",
-        { position: "top-center" }
-      );
-
+    // Validate imageUrl (basic check)
+    try {
+      new URL(imageUrl);
+    } catch {
+      toast.error("Please upload a valid image.", {
+        position: "top-center",
+      });
+      setUploading(false);
       return;
     }
 
+    data.imageUrl = imageUrl;
+    setUploading(false);
     onSubmit(data);
   }
 
@@ -63,14 +115,48 @@ export default function Form({ onSubmit, initialValues = {} }) {
           defaultValue={initialValues.botanicalName || ""}
         />
 
-        <label htmlFor="imageUrl">Image Url</label>
+        <label htmlFor="imageFile">Upload Image</label>
         <input
-          id="imageUrl"
-          name="imageUrl"
-          type="text"
-          required
-          defaultValue={initialValues.imageUrl || ""}
+          id="imageFile"
+          name="imageFile"
+          type="file"
+          accept="image/*"
+          onChange={(e) => {
+            const file = e.target.files[0];
+            if (!file) {
+              setImageFile(null);
+              setPreviewUrl(null);
+              return;
+            }
+            if (!validateImageFile(file)) {
+              setImageFile(null);
+              setPreviewUrl(null);
+              e.target.value = "";
+              return;
+            }
+            setImageFile(file);
+            setPreviewUrl(URL.createObjectURL(file));
+          }}
+          disabled={uploading}
         />
+        {uploading && <p>Uploading image...</p>}
+
+        {previewUrl && (
+          <styles.PreviewWrapper>
+            <styles.PreviewImg src={previewUrl} alt="Preview" />
+            <styles.CloseButton
+              type="button"
+              onClick={() => {
+                setPreviewUrl(null);
+                setImageFile(null);
+                document.getElementById("imageFile").value = "";
+              }}
+              aria-label="Remove image"
+            >
+              ×
+            </styles.CloseButton>
+          </styles.PreviewWrapper>
+        )}
 
         <label htmlFor="waterNeed">Water Need</label>
         <select
