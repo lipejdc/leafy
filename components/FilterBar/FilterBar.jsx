@@ -1,4 +1,4 @@
-import * as styles from "./styles";
+import { FilterBarWrapper, FilterButton, FilterLabel } from "./styles";
 
 export default function FilterBar({
   lightNeeds,
@@ -9,28 +9,28 @@ export default function FilterBar({
   setWaterFilter,
 }) {
   return (
-    <styles.FilterBarWrapper>
-      <styles.FilterLabel>Filter by light needs:</styles.FilterLabel>
+    <FilterBarWrapper>
+      <FilterLabel>Filter by light needs:</FilterLabel>
       {lightNeeds.map((need) => (
-        <styles.FilterButton
+        <FilterButton
           key={need}
           onClick={() => setLightFilter(lightFilter === need ? "All" : need)}
           active={lightFilter === need}
         >
           {need}
-        </styles.FilterButton>
+        </FilterButton>
       ))}
 
-      <styles.FilterLabel>Filter by water needs:</styles.FilterLabel>
+      <FilterLabel>Filter by water needs:</FilterLabel>
       {waterNeeds.map((need) => (
-        <styles.FilterButton
+        <FilterButton
           key={need}
           onClick={() => setWaterFilter(waterFilter === need ? "All" : need)}
           active={waterFilter === need}
         >
           {need}
-        </styles.FilterButton>
+        </FilterButton>
       ))}
-    </styles.FilterBarWrapper>
+    </FilterBarWrapper>
   );
 }
