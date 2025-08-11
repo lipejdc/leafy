@@ -1,5 +1,5 @@
 import { toast } from "sonner";
-import * as styles from "./styles";
+import { FormContainer, PreviewWrapper, PreviewImg, CloseButton } from "./styles";
 import { useState } from "react";
 import WaterNeedPicker from "../WaterNeedPicker/WaterNeedPicker";
 import LightNeedPicker from "../LightNeedPicker/LightNeedPicker";
@@ -83,7 +83,7 @@ export default function Form({ onSubmit, initialValues = {} }) {
   }
 
   return (
-    <styles.FormContainer onSubmit={handleSubmit}>
+    <FormContainer onSubmit={handleSubmit}>
       <label htmlFor="name">Name</label>
       <input
         id="name"
@@ -129,9 +129,9 @@ export default function Form({ onSubmit, initialValues = {} }) {
       {uploading && <p>Uploading image...</p>}
 
       {previewUrl && (
-        <styles.PreviewWrapper>
-          <styles.PreviewImg src={previewUrl} alt="Preview" />
-          <styles.CloseButton
+        <PreviewWrapper>
+          <PreviewImg src={previewUrl} alt="Preview" />
+          <CloseButton
             type="button"
             onClick={() => {
               setPreviewUrl("");
@@ -141,8 +141,8 @@ export default function Form({ onSubmit, initialValues = {} }) {
             aria-label="Remove image"
           >
             ×
-          </styles.CloseButton>
-        </styles.PreviewWrapper>
+          </CloseButton>
+        </PreviewWrapper>
       )}
 
       <label>Water Need</label>
@@ -177,6 +177,6 @@ export default function Form({ onSubmit, initialValues = {} }) {
       ></textarea>
 
       <button type="submit">Submit</button>
-    </styles.FormContainer>
+    </FormContainer>
   );
 }

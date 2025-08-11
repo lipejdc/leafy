@@ -1,15 +1,15 @@
 import { Sun } from "lucide-react";
-import * as styles from "./styles";
+import { Radiogroup, RadioButton } from "./styles";
 
 const lightLevels = ["Shade", "Partial Shade", "Full Sun"];
 
 export default function LightNeedPicker({ value, onChange }) {
   return (
-    <styles.Radiogroup role="radiogroup" aria-label="Light need">
+    <Radiogroup role="radiogroup" aria-label="Light need">
       {lightLevels.map((level, index) => {
         const isSelected = value === level;
         return (
-          <styles.RadioButton
+          <RadioButton
             key={level}
             type="button"
             onClick={() => onChange(level)}
@@ -22,9 +22,9 @@ export default function LightNeedPicker({ value, onChange }) {
               fill={index <= lightLevels.indexOf(value) ? "gold" : "none"}
               color={index <= lightLevels.indexOf(value) ? "gold" : "#ccc"}
             />
-          </styles.RadioButton>
+          </RadioButton>
         );
       })}
-    </styles.Radiogroup>
+    </Radiogroup>
   );
 }

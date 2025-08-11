@@ -1,13 +1,13 @@
-import * as styles from "./styles";
+import { Header, TopNav, NavLink, Title } from "./styles";
 
 export default function Navigation() {
   return (
-    <styles.Header>
-      <styles.TopNav>
-        <styles.NavLink href="/">Home</styles.NavLink>
-        <styles.NavLink href="/myplants">My Plants</styles.NavLink>
-      </styles.TopNav>
-      <styles.Title>Leafy</styles.Title>
-    </styles.Header>
+    <Header>
+      <TopNav>
+        <NavLink href="/">Home</NavLink>
+        <NavLink href="/myplants">My Plants</NavLink>
+      </TopNav>
+      <Title>Leafy</Title>
+    </Header>
   );
 }

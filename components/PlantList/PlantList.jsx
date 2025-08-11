@@ -1,18 +1,18 @@
 import Card from "../Card/Card";
-import * as styles from "./styles";
+import { ListSection, ListItem, EmptyMessage } from "./styles";
 
 export default function PlantList({ plants, toggleOwned, emptyMessage }) {
   if (!plants.length) {
-    return <styles.EmptyMessage>{emptyMessage || "No plants found 🌿"}</styles.EmptyMessage>;
+    return <EmptyMessage>{emptyMessage || "No plants found 🌿"}</EmptyMessage>;
   }
 
   return (
-    <styles.ListSection>
+    <ListSection>
       {plants.map((plant) => (
-        <styles.ListItem key={plant._id}>
+        <ListItem key={plant._id}>
           <Card plant={plant} toggleOwned={toggleOwned} />
-        </styles.ListItem>
+        </ListItem>
       ))}
-    </styles.ListSection>
+    </ListSection>
   );
 }

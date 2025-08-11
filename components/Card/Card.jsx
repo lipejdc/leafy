@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import MarkAsOwnedButton from "../MarkAsOwnedButton/MarkAsOwnedButton";
 import { Sun, Droplet } from "lucide-react";
-import * as styles from "./styles";
+import { StyledCard, ImageWrapper, Name, BotanicalName, WaterNeedWrapper, LightNeedWrapper } from "./styles";
 
 export default function Card({ plant, toggleOwned }) {
   const { name, botanicalName, imageUrl, _id, isOwned, lightNeed, waterNeed } = plant;
@@ -42,13 +42,13 @@ export default function Card({ plant, toggleOwned }) {
   ));
 
   return (
-    <styles.StyledCard>
+    <StyledCard>
       <MarkAsOwnedButton
         isOwned={isOwned}
         onClick={() => toggleOwned(_id, isOwned)}
       />
       <Link href={`plants/${_id}`}>
-        <styles.ImageWrapper>
+        <ImageWrapper>
           <Image
             src={imageUrl}
             alt={`Image of ${name}`}
@@ -56,12 +56,12 @@ export default function Card({ plant, toggleOwned }) {
             style={{ objectFit: "cover" }}
             sizes="(max-width: 768px) 100vw, 30rem"
           />
-        </styles.ImageWrapper>
-        <styles.Name>{name}</styles.Name>
-        <styles.BotanicalName>{botanicalName}</styles.BotanicalName>
-        <styles.LightNeedWrapper>{lightIcons}</styles.LightNeedWrapper>
-        <styles.WaterNeedWrapper>{waterIcons}</styles.WaterNeedWrapper>
+        </ImageWrapper>
+        <Name>{name}</Name>
+        <BotanicalName>{botanicalName}</BotanicalName>
+        <LightNeedWrapper>{lightIcons}</LightNeedWrapper>
+        <WaterNeedWrapper>{waterIcons}</WaterNeedWrapper>
       </Link>
-    </styles.StyledCard>
+    </StyledCard>
   );
 }

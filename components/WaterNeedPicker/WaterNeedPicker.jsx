@@ -1,15 +1,15 @@
 import { Droplet } from "lucide-react";
-import * as styles from "./styles";
+import { Radiogroup, RadioButton } from "./styles";
 
 const waterLevels = ["Low", "Medium", "High"];
 
 export default function WaterNeedPicker({ value, onChange }) {
   return (
-    <styles.Radiogroup role="radiogroup" aria-label="Water need">
+    <Radiogroup role="radiogroup" aria-label="Water need">
       {waterLevels.map((level, index) => {
         const isSelected = value === level;
         return (
-          <styles.RadioButton
+          <RadioButton
             key={level}
             type="button"
             onClick={() => onChange(level)}
@@ -22,9 +22,9 @@ export default function WaterNeedPicker({ value, onChange }) {
               fill={index <= waterLevels.indexOf(value) ? "deepskyblue" : "none"}
               color={index <= waterLevels.indexOf(value) ? "deepskyblue" : "#ccc"}
             />
-          </styles.RadioButton>
+          </RadioButton>
         );
       })}
-    </styles.Radiogroup>
+    </Radiogroup>
   );
 }
