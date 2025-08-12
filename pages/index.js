@@ -28,7 +28,7 @@ export default function HomePage({ toggleOwned }) {
   if (error) return <div>Error loading plants.</div>;
   if (!data) return <div>Loading...</div>;
 
-  const { plants, totalPages } = data;
+  const { plants, totalPages, total } = data;
 
   // Filtering and searching can be done client-side for small datasets,
   // but for large datasets, you should send filter/search params to the API.
@@ -76,6 +76,7 @@ export default function HomePage({ toggleOwned }) {
       />
 
       <PlantList
+        totalPlants={total}
         plants={filteredPlants}
         toggleOwned={toggleOwned}
         emptyMessage="No results found 🌱"
