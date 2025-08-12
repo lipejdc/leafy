@@ -34,8 +34,7 @@ const Heading = styled.h2`
 `;
 
 export default function MyPlantsPage({ toggleOwned, plants }) {
-
-  const ownedPlants = plants?.filter((plant) => plant.isOwned);
+  const ownedPlants = plants?.filter((plant) => plant.isOwned) || [];
 
   return (
     <>
@@ -46,7 +45,7 @@ export default function MyPlantsPage({ toggleOwned, plants }) {
         <ListSection>
           {ownedPlants.map((plant) => (
             <ListItem key={plant._id}>
-              <Card plant={plant} toggleOwned={toggleOwned}/>
+              <Card plant={plant} toggleOwned={toggleOwned} />
             </ListItem>
           ))}
         </ListSection>
