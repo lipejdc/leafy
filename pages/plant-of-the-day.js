@@ -62,36 +62,41 @@ const Fallback = styled.p`
   color: var(--color-border);
 `;
 
-export default function PlantOfTheDay({ plants }) {
+export default function PlantOfTheDay() {
   const [plant, setPlant] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!plants || plants.length === 0) return;
-
-    const todayKey = "plantOfTheDay_" + new Date().toDateString();
-    const cached = localStorage.getItem(todayKey);
-
-    if (cached) {
-      setPlant(JSON.parse(cached));
-    } else {
-      const randomPlant = plants[Math.floor(Math.random() * plants.length)];
-      setPlant(randomPlant);
-      localStorage.setItem(todayKey, JSON.stringify(randomPlant));
+    async function fetchPlantOfTheDay() {
+      try {
+        const response = await fetch("/api/plant-of-the-day");
+        if (!response.ok) throw new Error("Failed to fetch plant of the day");
+        const data = await response.json();
+        setPlant(data);
+      } catch (err) {
+        setError(err.message);
+      }
     }
-  }, [plants]);
 
-  if (!plants || plants.length === 0) {
+    fetchPlantOfTheDay();
+  }, []);
+
+  if (error)
     return (
       <Container>
-        <Fallback>No plants stored yet. Please add some plants first.</Fallback>
+        <Fallback>Error: {error}</Fallback>
       </Container>
     );
-  }
 
-  if (!plant) return <Container>Loading...</Container>;
+  if (!plant)
+    return (
+      <Container>
+        <Fallback>Loading...</Fallback>
+      </Container>
+    );
 
   return (
-    <Container className={plant ? "visible" : ""}>
+    <Container className="visible">
       <Title>{plant.name}</Title>
       <Botanical>{plant.botanicalName}</Botanical>
       {plant.imageUrl && <Image src={plant.imageUrl} alt={plant.name} />}
@@ -110,12 +115,11 @@ export default function PlantOfTheDay({ plants }) {
         <Label>Description:</Label>{" "}
         {plant.description || "No description available."}
       </Info>
-
+      {/* //This code runs only on local/dev environment, not when in production */}
       {process.env.NODE_ENV === "development" && (
         <button
-          onClick={() => {
-            const todayKey = "plantOfTheDay_" + new Date().toDateString();
-            localStorage.removeItem(todayKey);
+          onClick={async () => {
+            await fetch("/api/plant-of-the-day", { method: "DELETE" });
             window.location.reload();
           }}
         >
