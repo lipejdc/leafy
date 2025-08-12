@@ -1,5 +1,10 @@
-import { useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
+import useSWR from "swr";
+
+const fadeIn = keyframes`
+  from { opacity: 0; transform: translateY(10px);}
+  to { opacity: 1; transform: translateY(0);}
+`;
 
 const Container = styled.main`
   padding: 2rem;
@@ -9,20 +14,11 @@ const Container = styled.main`
   border-radius: 1rem;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   text-align: center;
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 1s ease-in-out, transform 0.8s ease;
+  animation: ${fadeIn} 0.8s ease forwards;
 
   &.visible {
-    opacity: 1;
-    transform: translateY(0);
     box-shadow: 0 0 20px rgba(46, 125, 50, 0.3);
   }
-`;
-
-const fadeIn = keyframes`
-  from { opacity: 0; transform: translateY(10px);}
-  to { opacity: 1; transform: translateY(0);}
 `;
 
 const Image = styled.img`
@@ -63,32 +59,16 @@ const Fallback = styled.p`
 `;
 
 export default function PlantOfTheDay() {
-  const [plant, setPlant] = useState(null);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    async function fetchPlantOfTheDay() {
-      try {
-        const response = await fetch("/api/plant-of-the-day");
-        if (!response.ok) throw new Error("Failed to fetch plant of the day");
-        const data = await response.json();
-        setPlant(data);
-      } catch (err) {
-        setError(err.message);
-      }
-    }
-
-    fetchPlantOfTheDay();
-  }, []);
+  const { data: plant, error, isLoading, mutate } = useSWR("/api/plant-of-the-day");
 
   if (error)
     return (
       <Container>
-        <Fallback>Error: {error}</Fallback>
+        <Fallback>Error: {error.message}</Fallback>
       </Container>
     );
 
-  if (!plant)
+  if (isLoading)
     return (
       <Container>
         <Fallback>Loading...</Fallback>
@@ -96,36 +76,36 @@ export default function PlantOfTheDay() {
     );
 
   return (
-    <Container className="visible">
-      <Title>{plant.name}</Title>
-      <Botanical>{plant.botanicalName}</Botanical>
-      {plant.imageUrl && <Image src={plant.imageUrl} alt={plant.name} />}
+  <Container key={plant._id} className="visible">
+    <Title>{plant.name}</Title>
+    <Botanical>{plant.botanicalName}</Botanical>
+    {plant.imageUrl && <Image src={plant.imageUrl} alt={plant.name} />}
 
-      <Info>
-        <Label>Light Needs:</Label> {plant.lightNeed}
-      </Info>
-      <Info>
-        <Label>Water Needs:</Label> {plant.waterNeed}
-      </Info>
-      <Info>
-        <Label>Fertiliser Seasons:</Label>{" "}
-        {plant.fertiliserSeason?.join(", ") || "N/A"}
-      </Info>
-      <Info>
-        <Label>Description:</Label>{" "}
-        {plant.description || "No description available."}
-      </Info>
-      {/* //This code runs only on local/dev environment, not when in production */}
-      {process.env.NODE_ENV === "development" && (
-        <button
-          onClick={async () => {
-            await fetch("/api/plant-of-the-day", { method: "DELETE" });
-            window.location.reload();
-          }}
-        >
-          Refresh Plant (dev only)
-        </button>
-      )}
-    </Container>
-  );
+    <Info>
+      <Label>Light Needs:</Label> {plant.lightNeed}
+    </Info>
+    <Info>
+      <Label>Water Needs:</Label> {plant.waterNeed}
+    </Info>
+    <Info>
+      <Label>Fertiliser Seasons:</Label>{" "}
+      {plant.fertiliserSeason?.join(", ") || "N/A"}
+    </Info>
+    <Info>
+      <Label>Description:</Label>{" "}
+      {plant.description || "No description available."}
+    </Info>
+
+    {process.env.NODE_ENV === "development" && (
+      <button
+        onClick={async () => {
+          await fetch("/api/plant-of-the-day", { method: "DELETE" });
+          mutate();
+        }}
+      >
+        Refresh Plant (dev only)
+      </button>
+    )}
+  </Container>
+);
 }
