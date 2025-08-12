@@ -4,16 +4,27 @@ import Plant from "@/db/models/Plant";
 export default async function handler(request, response) {
   await dbConnect();
   if (request.method === "GET") {
-    // Parse pagination params, with defaults
     const page = parseInt(request.query.page, 10) || 1;
     const limit = parseInt(request.query.limit, 10) || 30;
     const skip = (page - 1) * limit;
 
-    // Fetch paginated plants
-    const plants = await Plant.find().skip(skip).limit(limit);
+    // Get filters from query
+    const { lightNeed, waterNeed, search } = request.query;
 
-    // Get total count for frontend
-    const total = await Plant.countDocuments();
+    // Build MongoDB filter object
+    const filter = {};
+    if (lightNeed && lightNeed !== "All") filter.lightNeed = lightNeed;
+    if (waterNeed && waterNeed !== "All") filter.waterNeed = waterNeed;
+    if (search) {
+      filter.$or = [
+        { name: { $regex: search, $options: "i" } },
+        { botanicalName: { $regex: search, $options: "i" } },
+      ];
+    }
+
+    // Fetch filtered and paginated plants
+    const plants = await Plant.find(filter).skip(skip).limit(limit);
+    const total = await Plant.countDocuments(filter);
 
     return response.status(200).json({
       plants,

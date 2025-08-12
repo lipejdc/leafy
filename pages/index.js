@@ -17,21 +17,23 @@ const StyledButtonContainer = styled.div`
 export default function HomePage({ toggleOwned }) {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(12);
-
-  // Fetch paginated plants
-  const { data, error } = useSWR(`/api/plants?page=${page}&limit=${limit}`);
-
   const [lightFilter, setLightFilter] = useState("All");
   const [waterFilter, setWaterFilter] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
+
+  // Fetch paginated, filtered, and searched plants from the API
+  const { data, error } = useSWR(
+    `/api/plants?page=${page}&limit=${limit}&lightNeed=${lightFilter}&waterNeed=${waterFilter}&search=${encodeURIComponent(
+      searchQuery
+    )}`
+  );
 
   if (error) return <div>Error loading plants.</div>;
   if (!data) return <div>Loading...</div>;
 
   const { plants, totalPages, total } = data;
 
-  // Filtering and searching can be done client-side for small datasets,
-  // but for large datasets, you should send filter/search params to the API.
+  // Get unique filter options from the current dataset
   const LIGHT_NEEDS = [
     "All",
     ...new Set(plants.map((plant) => plant.lightNeed)),
@@ -40,21 +42,6 @@ export default function HomePage({ toggleOwned }) {
     "All",
     ...new Set(plants.map((plant) => plant.waterNeed)),
   ];
-
-  const filteredPlants = plants
-    .filter(
-      (plant) =>
-        (lightFilter === "All" || plant.lightNeed === lightFilter) &&
-        (waterFilter === "All" || plant.waterNeed === waterFilter)
-    )
-    .filter((plant) => {
-      if (!searchQuery) return true;
-      const query = searchQuery.toLowerCase();
-      return (
-        plant.name.toLowerCase().startsWith(query) ||
-        plant.botanicalName?.toLowerCase().startsWith(query)
-      );
-    });
 
   return (
     <>
@@ -77,7 +64,7 @@ export default function HomePage({ toggleOwned }) {
 
       <PlantList
         totalPlants={total}
-        plants={filteredPlants}
+        plants={plants}
         toggleOwned={toggleOwned}
         emptyMessage="No results found 🌱"
       />

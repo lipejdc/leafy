@@ -33,7 +33,10 @@ const Heading = styled.h2`
   margin: 0 0 1rem 5rem;
 `;
 
-export default function MyPlantsPage({ toggleOwned, plants }) {
+export default function MyPlantsPage({ toggleOwned }) {
+  // Fetch paginated plants
+  const { data, error } = useSWR(`/api/plants`);
+  const plants = data?.plants || [];
   const ownedPlants = plants?.filter((plant) => plant.isOwned) || [];
 
   return (

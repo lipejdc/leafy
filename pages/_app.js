@@ -2,6 +2,7 @@ import GlobalStyle from "../styles";
 import { SWRConfig } from "swr";
 import Layout from "@/components/Layout/Layout";
 import { Toaster } from "sonner";
+import { mutate } from "swr";
 
 const fetcher = async (...args) => {
   const response = await fetch(...args);
@@ -22,6 +23,8 @@ export default function App({ Component, pageProps }) {
         },
         body: JSON.stringify({ isOwned }),
       });
+      // Revalidate all SWR keys starting with /api/plants
+      mutate((key) => key && key.startsWith("/api/plants"));
 
       if (!response.ok) throw new Error("Failed to update plant");
     } catch (error) {
