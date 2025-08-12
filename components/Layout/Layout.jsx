@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Navigation from "../Navigation/Navigation"
-import * as styles from "./styles";
+import { Main } from "./styles";
 
 export default function Layout({ children }) {
   return (
@@ -9,9 +9,9 @@ export default function Layout({ children }) {
         <title>Leafy</title>
       </Head>
       <Navigation/>
-      <styles.Main>
+      <Main>
         {children}
-      </styles.Main>
+      </Main>
     </>
   );
 }
