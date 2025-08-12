@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useSWR from "swr";
 import Link from "next/link";
 import styled from "styled-components";
@@ -20,28 +20,34 @@ export default function HomePage({ toggleOwned }) {
   const [lightFilter, setLightFilter] = useState("All");
   const [waterFilter, setWaterFilter] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState(searchQuery);
+
+  // Debounce search input
+  useEffect(() => {
+    const handler = setTimeout(() => setDebouncedSearch(searchQuery), 300);
+    return () => clearTimeout(handler);
+  }, [searchQuery]);
+
+  // Reset pagination when filters/search change
+  useEffect(() => {
+    setPage(1);
+  }, [lightFilter, waterFilter, debouncedSearch]);
 
   // Fetch paginated, filtered, and searched plants from the API
   const { data, error } = useSWR(
     `/api/plants?page=${page}&limit=${limit}&lightNeed=${lightFilter}&waterNeed=${waterFilter}&search=${encodeURIComponent(
-      searchQuery
+      debouncedSearch
     )}`
   );
 
   if (error) return <div>Error loading plants.</div>;
   if (!data) return <div>Loading...</div>;
 
-  const { plants, totalPages, total } = data;
+  const { plants, totalPages, total, allLightNeeds, allWaterNeeds } = data;
 
-  // Get unique filter options from the current dataset
-  const LIGHT_NEEDS = [
-    "All",
-    ...new Set(plants.map((plant) => plant.lightNeed)),
-  ];
-  const WATER_NEEDS = [
-    "All",
-    ...new Set(plants.map((plant) => plant.waterNeed)),
-  ];
+  // Use filter options from API response
+  const LIGHT_NEEDS = allLightNeeds || ["All"];
+  const WATER_NEEDS = allWaterNeeds || ["All"];
 
   return (
     <>

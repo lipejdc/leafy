@@ -26,11 +26,17 @@ export default async function handler(request, response) {
     const plants = await Plant.find(filter).skip(skip).limit(limit);
     const total = await Plant.countDocuments(filter);
 
+    // Fetch all unique filter options from the database
+    const allLightNeeds = await Plant.distinct("lightNeed");
+    const allWaterNeeds = await Plant.distinct("waterNeed");
+
     return response.status(200).json({
       plants,
       total,
       page,
       totalPages: Math.ceil(total / limit),
+      allLightNeeds: ["All", ...allLightNeeds],
+      allWaterNeeds: ["All", ...allWaterNeeds],
     });
   } else if (request.method === "POST") {
     const plantData = request.body;
