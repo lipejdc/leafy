@@ -1,7 +1,8 @@
 import { Search } from "lucide-react";
 import { Wrapper, Icon, Input } from "./styles";
+import React from "react";
 
-export default function SearchBar({ searchQuery, onChange }) {
+function SearchBar({ searchQuery, onChange }) {
   return (
     <Wrapper>
       <Icon>
@@ -17,3 +18,5 @@ export default function SearchBar({ searchQuery, onChange }) {
     </Wrapper>
   );
 }
+
+export default React.memo(SearchBar);

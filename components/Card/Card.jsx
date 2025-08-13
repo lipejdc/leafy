@@ -2,15 +2,23 @@ import Image from "next/image";
 import Link from "next/link";
 import MarkAsOwnedButton from "../MarkAsOwnedButton/MarkAsOwnedButton";
 import { Sun, Droplet } from "lucide-react";
-import { StyledCard, ImageWrapper, Name, BotanicalName, WaterNeedWrapper, LightNeedWrapper } from "./styles";
+import {
+  StyledCard,
+  ImageWrapper,
+  Name,
+  BotanicalName,
+  WaterNeedWrapper,
+  LightNeedWrapper,
+} from "./styles";
 
 export default function Card({ plant, toggleOwned }) {
-  const { name, botanicalName, imageUrl, _id, isOwned, lightNeed, waterNeed } = plant;
+  const { name, botanicalName, imageUrl, _id, isOwned, lightNeed, waterNeed } =
+    plant;
 
   const fillCount = {
     "Full Sun": 3,
     "Partial Shade": 2,
-    "Shade": 1,
+    Shade: 1,
   };
 
   const filled = fillCount[lightNeed] || 0;
@@ -45,7 +53,7 @@ export default function Card({ plant, toggleOwned }) {
     <StyledCard>
       <MarkAsOwnedButton
         isOwned={isOwned}
-        onClick={() => toggleOwned(_id, isOwned)}
+        onClick={() => toggleOwned(_id, !isOwned)}
       />
       <Link href={`plants/${_id}`}>
         <ImageWrapper>

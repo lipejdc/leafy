@@ -23,3 +23,10 @@ export const EmptyMessage = styled.p`
   color: #777;
   margin-top: 2rem;
 `;
+
+export const PlantCount = styled.p`
+  text-align: right;
+  margin: 1rem 2rem 0.5rem 0;
+  color: #555;
+  font-size: 1.05rem;
+`;
