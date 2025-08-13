@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import useSWR from "swr";
 import Link from "next/link";
 import styled from "styled-components";
-import FilterBar from "@/components/FilterBar/FilterBar";
 import PlantList from "@/components/PlantList/PlantList";
 import PaginationBar from "@/components/PaginationBar/PaginationBar";
 import { useOptimisticOwned } from "@/hooks/useOptimisticOwned";
@@ -14,11 +13,16 @@ const StyledButtonContainer = styled.div`
   margin: 2rem auto 1rem;
 `;
 
-export default function PlantExplorer({ search }) {
+export default function PlantExplorer({
+  search,
+  toggleOwned,
+  lightFilter,
+  waterFilter,
+  setLightNeedsOptions,
+  setWaterNeedsOptions,
+}) {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(12);
-  const [lightFilter, setLightFilter] = useState("All");
-  const [waterFilter, setWaterFilter] = useState("All");
 
   useEffect(() => {
     setPage(1);
@@ -28,18 +32,47 @@ export default function PlantExplorer({ search }) {
     search
   )}`;
 
-  const { data, error } = useSWR(swrKey);
+  const { data, error, isLoading } = useSWR(swrKey);
 
   // Use the custom hook for optimistic UI
-  const { mergeOptimistic, toggleOwned } = useOptimisticOwned(swrKey, data);
+  const { mergeOptimistic, toggleOwned: optimisticToggleOwned } =
+    useOptimisticOwned(swrKey, data);
 
-  if (error) return <div>Error loading plants.</div>;
-  if (!data) return <div>Loading...</div>;
+  useEffect(() => {
+    if (data) {
+      setLightNeedsOptions(data.allLightNeeds || ["All"]);
+      setWaterNeedsOptions(data.allWaterNeeds || ["All"]);
+    }
+  }, [data, setLightNeedsOptions, setWaterNeedsOptions]);
 
-  const { plants, totalPages, total, allLightNeeds, allWaterNeeds } = data;
-  const LIGHT_NEEDS = allLightNeeds || ["All"];
-  const WATER_NEEDS = allWaterNeeds || ["All"];
+  // Only show loading/error in the list area
+  if (error)
+    return (
+      <>
+        <StyledButtonContainer>
+          <Link href="/create">
+            <button>+ add Plant</button>
+          </Link>
+        </StyledButtonContainer>
+        <div style={{ textAlign: "center", margin: "2rem" }}>
+          Error loading plants.
+        </div>
+      </>
+    );
 
+  if (isLoading || !data)
+    return (
+      <>
+        <StyledButtonContainer>
+          <Link href="/create">
+            <button>+ add Plant</button>
+          </Link>
+        </StyledButtonContainer>
+        <div style={{ textAlign: "center", margin: "2rem" }}>Loading...</div>
+      </>
+    );
+
+  const { plants, totalPages, total } = data;
   const displayPlants = mergeOptimistic(plants);
 
   return (
@@ -50,19 +83,10 @@ export default function PlantExplorer({ search }) {
         </Link>
       </StyledButtonContainer>
 
-      <FilterBar
-        lightNeeds={LIGHT_NEEDS}
-        waterNeeds={WATER_NEEDS}
-        lightFilter={lightFilter}
-        waterFilter={waterFilter}
-        setLightFilter={setLightFilter}
-        setWaterFilter={setWaterFilter}
-      />
-
       <PlantList
         totalPlants={total}
         plants={displayPlants}
-        toggleOwned={toggleOwned}
+        toggleOwned={optimisticToggleOwned}
         emptyMessage="No results found 🌱"
       />
 
