@@ -30,15 +30,15 @@ export default function PlantExplorer({ search }) {
 
   const { data, error } = useSWR(swrKey);
 
+  // Use the custom hook for optimistic UI
+  const { mergeOptimistic, toggleOwned } = useOptimisticOwned(swrKey, data);
+
   if (error) return <div>Error loading plants.</div>;
   if (!data) return <div>Loading...</div>;
 
   const { plants, totalPages, total, allLightNeeds, allWaterNeeds } = data;
   const LIGHT_NEEDS = allLightNeeds || ["All"];
   const WATER_NEEDS = allWaterNeeds || ["All"];
-
-  // Use the custom hook for optimistic UI
-  const { mergeOptimistic, toggleOwned } = useOptimisticOwned(swrKey, data);
 
   const displayPlants = mergeOptimistic(plants);
 
