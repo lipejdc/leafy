@@ -34,16 +34,24 @@ const Heading = styled.h2`
 `;
 
 export default function MyPlantsPage({ toggleOwned }) {
-  // Fetch paginated plants
   const { data, error } = useSWR(`/api/plants`);
-  const plants = data?.plants || [];
-  const ownedPlants = plants?.filter((plant) => plant.isOwned) || [];
+  
+  if (error) {
+    return <Message>Failed to load plants. Please try again later.</Message>;
+  }
+
+  if (!data) {
+    return <Message>Loading your plants...</Message>;
+  }
+
+  const plants = data.plants || [];
+  const ownedPlants = plants.filter((plant) => plant.isOwned);
 
   return (
     <>
       <Heading>My Plants</Heading>
       {ownedPlants.length === 0 ? (
-        <Message>{`You haven't marked any plants as owned yet.`}</Message>
+        <Message>You haven&apos;t marked any plants as owned yet.</Message>
       ) : (
         <ListSection>
           {ownedPlants.map((plant) => (
@@ -55,4 +63,24 @@ export default function MyPlantsPage({ toggleOwned }) {
       )}
     </>
   );
+}
+
+//Server-side protection
+import { getSession } from "next-auth/react";
+
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
 }
