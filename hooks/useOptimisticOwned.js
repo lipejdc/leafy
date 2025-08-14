@@ -1,18 +1,44 @@
 import { useState } from "react";
 import { mutate } from "swr";
+import { useSession } from "next-auth/react";
 
 export function useOptimisticOwned(swrKey, data) {
   const [optimisticOwned, setOptimisticOwned] = useState({});
+  const { data: session, status } = useSession();
 
   async function toggleOwned(plantId, isOwned) {
+    if (status !== "authenticated") {
+    console.error("User session not ready or not authenticated");
+    return;
+    }
+
+    // Save previous state for rollback
+    const prevOwned =
+      optimisticOwned[plantId] ??
+      data.plants
+        .find((p) => p._id === plantId)
+        ?.ownedBy.includes(session.user.id);
+
+    // Optimistic update
     setOptimisticOwned((prev) => ({ ...prev, [plantId]: isOwned }));
+
+    const foundPlant = data.plants.find((p) => p._id === plantId);
+
+    if (!foundPlant?.ownedBy.includes(session.user.id)) {
+      foundPlant.ownedBy.push(session.user.id);
+    } else {
+      //Remove user from ownedBy
+      foundPlant.ownedBy = foundPlant.ownedBy.filter(
+        (uid) => uid.toString() !== session.user.id
+      );
+    }
 
     mutate(
       swrKey,
       {
         ...data,
-        plants: data.plants.map((plant) =>
-          plant._id === plantId ? { ...plant, isOwned } : plant
+        plants: data.plants.map((p) =>
+          p._id === plantId ? foundPlant : p
         ),
       },
       false
@@ -21,24 +47,18 @@ export function useOptimisticOwned(swrKey, data) {
     try {
       const response = await fetch(`/api/plants/${plantId}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ isOwned }),
       });
+
       if (!response.ok) throw new Error("Failed to update plant");
+
       mutate((key) => key && key.startsWith("/api/plants"));
     } catch (err) {
-      setOptimisticOwned((prev) => ({ ...prev, [plantId]: !isOwned }));
+      console.error(err);
+      // Rollback
+      setOptimisticOwned((prev) => ({ ...prev, [plantId]: prevOwned }));
       mutate((key) => key && key.startsWith("/api/plants"));
     }
   }
 
-  function mergeOptimistic(plants) {
-    return plants.map((plant) =>
-      plant._id in optimisticOwned
-        ? { ...plant, isOwned: optimisticOwned[plant._id] }
-        : plant
-    );
-  }
-
-  return { mergeOptimistic, toggleOwned };
+  return { toggleOwned };
 }

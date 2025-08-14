@@ -12,20 +12,35 @@ const fetcher = async (...args) => {
   return await response.json();
 };
 
-export default function App({ Component, pageProps: { session, ...pageProps } }) {
+export default function App({
+  Component,
+  pageProps: { session, ...pageProps },
+}) {
   //Toggle plant ownership for the logged-in user
-  async function toggleOwned(plantId, isOwned) {
+  async function toggleOwned(plantId, isOwned, userId) {
     try {
       const response = await fetch(`/api/plants/${plantId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ isOwned }),
+        credentials: "include",
       });
 
       if (!response.ok) throw new Error("Failed to update plant ownership");
 
       //Revalidate all plant-related SWR caches
-      mutate((key) => key && key.startsWith("/api/plants"));
+      mutate(
+        `/api/plants/${plantId}`,
+        async (cachedPlant) => {
+          return {
+            ...cachedPlant,
+            ownedBy: isOwned
+              ? [...cachedPlant.ownedBy, session.user.id]
+              : cachedPlant.ownedBy.filter((id) => id !== session.user.id),
+          };
+        },
+        false
+      );
     } catch (error) {
       console.error(error);
     }
@@ -37,7 +52,7 @@ export default function App({ Component, pageProps: { session, ...pageProps } })
         <Layout>
           <GlobalStyle />
           <Toaster />
-          <Component {...pageProps} toggleOwned={toggleOwned} />
+          <Component {...pageProps} />
         </Layout>
       </SWRConfig>
     </SessionProvider>

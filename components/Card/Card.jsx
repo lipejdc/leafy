@@ -13,7 +13,10 @@ import {
 } from "./styles";
 
 export default function Card({ plant, toggleOwned }) {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+
+  if (status === "loading") return null; // wait until session is loaded
+
   const { name, botanicalName, imageUrl, _id, ownedBy = [], lightNeed, waterNeed } = plant;
 
   // Determine if the current user owns this plant
@@ -46,7 +49,7 @@ export default function Card({ plant, toggleOwned }) {
       {session && (
         <MarkAsOwnedButton
           isOwned={isOwned}
-          onClick={() => toggleOwned(_id, !isOwned, session.user.id)}
+          onClick={() => toggleOwned(_id, !isOwned)}
         />
       )}
       <Link href={`plants/${_id}`}>

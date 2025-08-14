@@ -15,7 +15,7 @@ export default function FilterBar({
         <FilterButton
           key={need}
           onClick={() => setLightFilter(lightFilter === need ? "All" : need)}
-          active={lightFilter === need}
+          $active={lightFilter === need}
         >
           {need}
         </FilterButton>
@@ -26,7 +26,7 @@ export default function FilterBar({
         <FilterButton
           key={need}
           onClick={() => setWaterFilter(waterFilter === need ? "All" : need)}
-          active={waterFilter === need}
+          $active={waterFilter === need}
         >
           {need}
         </FilterButton>

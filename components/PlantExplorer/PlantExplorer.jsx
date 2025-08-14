@@ -73,7 +73,6 @@ export default function PlantExplorer({
     );
 
   const { plants, totalPages, total } = data;
-  const displayPlants = mergeOptimistic(plants);
 
   return (
     <>
@@ -85,7 +84,7 @@ export default function PlantExplorer({
 
       <PlantList
         totalPlants={total}
-        plants={displayPlants}
+        plants={plants}
         toggleOwned={optimisticToggleOwned}
         emptyMessage="No results found 🌱"
       />
