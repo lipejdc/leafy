@@ -12,9 +12,8 @@ const fetcher = async (...args) => {
   return await response.json();
 };
 
-export default function App({ Component, pageProps }) {
-  const { session } = pageProps; // <-- get session from pageProps
-
+export default function App({ Component, pageProps: { session, ...pageProps } }) {
+  // toggleOwned function remains unchanged
   async function toggleOwned(plantId, isOwned) {
     try {
       const response = await fetch(`/api/plants/${plantId}`, {
@@ -23,7 +22,7 @@ export default function App({ Component, pageProps }) {
         body: JSON.stringify({ isOwned }),
       });
 
-      // Revalidate all SWR keys starting with /api/plants
+      //Revalidate all SWR keys starting with /api/plants
       mutate((key) => key && key.startsWith("/api/plants"));
 
       if (!response.ok) throw new Error("Failed to update plant");

@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import useSWR from "swr";
 import Card from "@/components/Card/Card";
+import { getSession } from "next-auth/react";
 
 const ListSection = styled.ul`
   display: flex;
@@ -33,19 +34,38 @@ const Heading = styled.h2`
   margin: 0 0 1rem 5rem;
 `;
 
+//Server-side protection for logged-in users only
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+}
+
+
 export default function MyPlantsPage({ toggleOwned }) {
+  //Fetch ONLY the logged-in user's owned plants
   const { data, error } = useSWR(`/api/plants`);
-  
+
   if (error) {
-    return <Message>Failed to load plants. Please try again later.</Message>;
+    return <Message>Failed to load your plants. Please try again later.</Message>;
   }
 
   if (!data) {
     return <Message>Loading your plants...</Message>;
   }
 
-  const plants = data.plants || [];
-  const ownedPlants = plants.filter((plant) => plant.isOwned);
+  const ownedPlants = data.plants || [];
 
   return (
     <>
@@ -63,24 +83,4 @@ export default function MyPlantsPage({ toggleOwned }) {
       )}
     </>
   );
-}
-
-//Server-side protection
-import { getSession } from "next-auth/react";
-
-export async function getServerSideProps(context) {
-  const session = await getSession(context);
-
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
-      },
-    };
-  }
-
-  return {
-    props: {},
-  };
 }
