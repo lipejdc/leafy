@@ -13,7 +13,7 @@ const fetcher = async (...args) => {
 };
 
 export default function App({ Component, pageProps: { session, ...pageProps } }) {
-  // toggleOwned function remains unchanged
+  //Toggle plant ownership for the logged-in user
   async function toggleOwned(plantId, isOwned) {
     try {
       const response = await fetch(`/api/plants/${plantId}`, {
@@ -22,10 +22,10 @@ export default function App({ Component, pageProps: { session, ...pageProps } })
         body: JSON.stringify({ isOwned }),
       });
 
-      //Revalidate all SWR keys starting with /api/plants
-      mutate((key) => key && key.startsWith("/api/plants"));
+      if (!response.ok) throw new Error("Failed to update plant ownership");
 
-      if (!response.ok) throw new Error("Failed to update plant");
+      //Revalidate all plant-related SWR caches
+      mutate((key) => key && key.startsWith("/api/plants"));
     } catch (error) {
       console.error(error);
     }

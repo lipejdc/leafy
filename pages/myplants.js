@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import useSWR from "swr";
+import useSWR, { mutate } from "swr";
 import Card from "@/components/Card/Card";
 import { getSession } from "next-auth/react";
 
@@ -34,38 +34,57 @@ const Heading = styled.h2`
   margin: 0 0 1rem 5rem;
 `;
 
-//Server-side protection for logged-in users only
+// Server-side protection for logged-in users only
 export async function getServerSideProps(context) {
   const session = await getSession(context);
 
   if (!session) {
     return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
-      },
+      redirect: { destination: "/login", permanent: false },
     };
   }
 
-  return {
-    props: {},
-  };
+  return { props: { session } };
 }
 
+// Optimistic toggle function
+async function toggleOwnedOptimistic(plantId, isOwned) {
+  // Update local SWR cache immediately
+  mutate("/api/plants", (data) => {
+    if (!data) return data;
+    return {
+      ...data,
+      plants: data.plants.map((plant) =>
+        plant._id === plantId ? { ...plant, isOwned } : plant
+      ),
+    };
+  }, false);
 
-export default function MyPlantsPage({ toggleOwned }) {
-  //Fetch ONLY the logged-in user's owned plants
-  const { data, error } = useSWR(`/api/plants`);
+  try {
+    const res = await fetch(`/api/plants/${plantId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ isOwned }),
+    });
 
-  if (error) {
-    return <Message>Failed to load your plants. Please try again later.</Message>;
+    if (!res.ok) throw new Error("Failed to update plant");
+
+    // Revalidate SWR
+    mutate("/api/plants");
+  } catch (err) {
+    console.error(err);
   }
+}
 
-  if (!data) {
-    return <Message>Loading your plants...</Message>;
-  }
+export default function MyPlantsPage({ session }) {
+  const { data, error } = useSWR("/api/plants");
 
-  const ownedPlants = data.plants || [];
+  if (error) return <Message>Failed to load your plants. Please try again later.</Message>;
+  if (!data) return <Message>Loading your plants...</Message>;
+
+  const ownedPlants = (data.plants || []).filter((plant) =>
+    plant.ownedBy?.includes(session.user.id)
+  );
 
   return (
     <>
@@ -76,7 +95,10 @@ export default function MyPlantsPage({ toggleOwned }) {
         <ListSection>
           {ownedPlants.map((plant) => (
             <ListItem key={plant._id}>
-              <Card plant={plant} toggleOwned={toggleOwned} />
+              <Card
+                plant={plant}
+                toggleOwned={(id, isOwned) => toggleOwnedOptimistic(id, isOwned)}
+              />
             </ListItem>
           ))}
         </ListSection>
