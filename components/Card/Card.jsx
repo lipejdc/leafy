@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import MarkAsOwnedButton from "../MarkAsOwnedButton/MarkAsOwnedButton";
 import { Sun, Droplet } from "lucide-react";
 import {
@@ -12,17 +13,15 @@ import {
 } from "./styles";
 
 export default function Card({ plant, toggleOwned }) {
-  const { name, botanicalName, imageUrl, _id, isOwned, lightNeed, waterNeed } =
-    plant;
+  const { data: session } = useSession();
+  const { name, botanicalName, imageUrl, _id, isOwned, lightNeed, waterNeed } = plant;
 
   const fillCount = {
     "Full Sun": 3,
     "Partial Shade": 2,
     Shade: 1,
   };
-
   const filled = fillCount[lightNeed] || 0;
-
   const lightIcons = [0, 1, 2].map((i) => (
     <Sun
       key={i}
@@ -37,9 +36,7 @@ export default function Card({ plant, toggleOwned }) {
     Medium: 2,
     Low: 1,
   };
-
   const waterFilled = waterFillCount[waterNeed] || 0;
-
   const waterIcons = [0, 1, 2].map((i) => (
     <Droplet
       key={i}
@@ -51,10 +48,12 @@ export default function Card({ plant, toggleOwned }) {
 
   return (
     <StyledCard>
-      <MarkAsOwnedButton
-        isOwned={isOwned}
-        onClick={() => toggleOwned(_id, !isOwned)}
-      />
+      {session && (
+        <MarkAsOwnedButton
+          isOwned={isOwned}
+          onClick={() => toggleOwned(_id, !isOwned)}
+        />
+      )}
       <Link href={`plants/${_id}`}>
         <ImageWrapper>
           <Image
