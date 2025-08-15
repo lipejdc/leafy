@@ -15,7 +15,6 @@ const StyledButtonContainer = styled.div`
 
 export default function PlantExplorer({
   search,
-  toggleOwned,
   lightFilter,
   waterFilter,
   setLightNeedsOptions,
@@ -35,7 +34,7 @@ export default function PlantExplorer({
   const { data, error, isLoading } = useSWR(swrKey);
 
   // Use the custom hook for optimistic UI
-  const { mergeOptimistic, toggleOwned: optimisticToggleOwned } =
+  const { toggleOwned: optimisticToggleOwned } =
     useOptimisticOwned(swrKey, data);
 
   useEffect(() => {

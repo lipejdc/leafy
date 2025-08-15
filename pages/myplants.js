@@ -52,7 +52,7 @@ export default function MyPlantsPage() {
   const { data = [], error } = useSWR("/api/plants");
   const { data: session } = useSession();
   
-  const { mergeOptimistic, toggleOwned: optimisticToggleOwned } =
+  const { toggleOwned: optimisticToggleOwned } =
     useOptimisticOwned("/api/plants", data);
 
   if (error)
