@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Card from "@/components/Card/Card";
 import { getSession, useSession } from "next-auth/react";
 import { useOptimisticOwned } from "@/hooks/useOptimisticOwned";
+import useSWR from "swr";
 
 const ListSection = styled.ul`
   display: flex;
