@@ -15,7 +15,6 @@ const StyledButtonContainer = styled.div`
 
 export default function PlantExplorer({
   search,
-  toggleOwned,
   lightFilter,
   waterFilter,
   setLightNeedsOptions,
@@ -35,7 +34,7 @@ export default function PlantExplorer({
   const { data, error, isLoading } = useSWR(swrKey);
 
   // Use the custom hook for optimistic UI
-  const { mergeOptimistic, toggleOwned: optimisticToggleOwned } =
+  const { toggleOwned: optimisticToggleOwned } =
     useOptimisticOwned(swrKey, data);
 
   useEffect(() => {
@@ -73,7 +72,6 @@ export default function PlantExplorer({
     );
 
   const { plants, totalPages, total } = data;
-  const displayPlants = mergeOptimistic(plants);
 
   return (
     <>
@@ -85,7 +83,7 @@ export default function PlantExplorer({
 
       <PlantList
         totalPlants={total}
-        plants={displayPlants}
+        plants={plants}
         toggleOwned={optimisticToggleOwned}
         emptyMessage="No results found 🌱"
       />

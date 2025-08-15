@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import useSWR from "swr";
 import Card from "@/components/Card/Card";
-import { getSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
+import { useOptimisticOwned } from "@/hooks/useOptimisticOwned";
 
 const ListSection = styled.ul`
   display: flex;
@@ -34,38 +34,35 @@ const Heading = styled.h2`
   margin: 0 0 1rem 5rem;
 `;
 
-//Server-side protection for logged-in users only
+// Server-side protection for logged-in users only
 export async function getServerSideProps(context) {
   const session = await getSession(context);
 
   if (!session) {
     return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
-      },
+      redirect: { destination: "/login", permanent: false },
     };
   }
 
-  return {
-    props: {},
-  };
+  return { props: { session } };
 }
 
+export default function MyPlantsPage() {
+  const { data = [], error } = useSWR("/api/plants");
+  const { data: session } = useSession();
+  
+  const { toggleOwned: optimisticToggleOwned } =
+    useOptimisticOwned("/api/plants", data);
 
-export default function MyPlantsPage({ toggleOwned }) {
-  //Fetch ONLY the logged-in user's owned plants
-  const { data, error } = useSWR(`/api/plants`);
-
-  if (error) {
-    return <Message>Failed to load your plants. Please try again later.</Message>;
-  }
-
-  if (!data) {
-    return <Message>Loading your plants...</Message>;
-  }
-
-  const ownedPlants = data.plants || [];
+  if (error)
+    return (
+      <Message>Failed to load your plants. Please try again later.</Message>
+    );
+  if (!data) return <Message>Loading your plants...</Message>;
+  
+  const ownedPlants = (data.plants || []).filter((plant) =>
+    plant.ownedBy?.includes(session?.user?.id)
+  );
 
   return (
     <>
@@ -76,7 +73,10 @@ export default function MyPlantsPage({ toggleOwned }) {
         <ListSection>
           {ownedPlants.map((plant) => (
             <ListItem key={plant._id}>
-              <Card plant={plant} toggleOwned={toggleOwned} />
+              <Card
+                plant={plant}
+                toggleOwned={optimisticToggleOwned}
+              />
             </ListItem>
           ))}
         </ListSection>

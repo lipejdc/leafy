@@ -36,7 +36,7 @@ export default function PaginationBar({
           &lt; Previous
         </PageBtn>
         {/* First page */}
-        <PageBtn active={page === 1} onClick={() => setPage(1)}>
+        <PageBtn $active={page === 1} onClick={() => setPage(1)}>
           1
         </PageBtn>
         {/* Ellipsis if current page is far from start */}
@@ -47,7 +47,7 @@ export default function PaginationBar({
         )}
         {/* Current page (if not first or last) */}
         {page > 1 && page < totalPages && (
-          <PageBtn active onClick={() => setPage(page)}>
+          <PageBtn $active onClick={() => setPage(page)}>
             {page}
           </PageBtn>
         )}
@@ -60,7 +60,7 @@ export default function PaginationBar({
         {/* Last page */}
         {totalPages > 1 && (
           <PageBtn
-            active={page === totalPages}
+            $active={page === totalPages}
             onClick={() => setPage(totalPages)}
           >
             {totalPages}

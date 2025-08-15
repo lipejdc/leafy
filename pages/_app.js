@@ -12,24 +12,10 @@ const fetcher = async (...args) => {
   return await response.json();
 };
 
-export default function App({ Component, pageProps: { session, ...pageProps } }) {
-  // toggleOwned function remains unchanged
-  async function toggleOwned(plantId, isOwned) {
-    try {
-      const response = await fetch(`/api/plants/${plantId}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ isOwned }),
-      });
-
-      //Revalidate all SWR keys starting with /api/plants
-      mutate((key) => key && key.startsWith("/api/plants"));
-
-      if (!response.ok) throw new Error("Failed to update plant");
-    } catch (error) {
-      console.error(error);
-    }
-  }
+export default function App({
+  Component,
+  pageProps: { session, ...pageProps },
+}) {
 
   return (
     <SessionProvider session={session}>
@@ -37,7 +23,7 @@ export default function App({ Component, pageProps: { session, ...pageProps } })
         <Layout>
           <GlobalStyle />
           <Toaster />
-          <Component {...pageProps} toggleOwned={toggleOwned} />
+          <Component {...pageProps} />
         </Layout>
       </SWRConfig>
     </SessionProvider>

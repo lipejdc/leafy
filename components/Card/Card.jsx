@@ -13,14 +13,16 @@ import {
 } from "./styles";
 
 export default function Card({ plant, toggleOwned }) {
-  const { data: session } = useSession();
-  const { name, botanicalName, imageUrl, _id, isOwned, lightNeed, waterNeed } = plant;
+  const { data: session, status } = useSession();
 
-  const fillCount = {
-    "Full Sun": 3,
-    "Partial Shade": 2,
-    Shade: 1,
-  };
+  if (status === "loading") return null; // wait until session is loaded
+
+  const { name, botanicalName, imageUrl, _id, ownedBy = [], lightNeed, waterNeed } = plant;
+
+  // Determine if the current user owns this plant
+  const isOwned = session ? ownedBy.includes(session.user.id) : false;
+
+  const fillCount = { "Full Sun": 3, "Partial Shade": 2, Shade: 1 };
   const filled = fillCount[lightNeed] || 0;
   const lightIcons = [0, 1, 2].map((i) => (
     <Sun
@@ -31,11 +33,7 @@ export default function Card({ plant, toggleOwned }) {
     />
   ));
 
-  const waterFillCount = {
-    High: 3,
-    Medium: 2,
-    Low: 1,
-  };
+  const waterFillCount = { High: 3, Medium: 2, Low: 1 };
   const waterFilled = waterFillCount[waterNeed] || 0;
   const waterIcons = [0, 1, 2].map((i) => (
     <Droplet

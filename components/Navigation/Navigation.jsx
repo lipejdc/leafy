@@ -30,7 +30,7 @@ export default function Navigation() {
         )}
 
         {!isLoading && session && (
-          <AuthButton signout onClick={() => signOut({ callbackUrl: "/" })}>
+          <AuthButton $signout onClick={() => signOut({ callbackUrl: "/" })}>
             <LogOut size={18} /> Sign Out
           </AuthButton>
         )}

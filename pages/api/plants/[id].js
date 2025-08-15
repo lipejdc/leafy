@@ -1,15 +1,20 @@
 import dbConnect from "@/db/connect";
 import Plant from "@/db/models/Plant";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "../auth/[...nextauth]";
 
 export default async function handler(req, res) {
   await dbConnect();
   const { id } = req.query;
 
+  //Get current logged-in user
+  const session = await getServerSession(req, res, authOptions);
+  if (!session) return res.status(401).json({ message: "Unauthorized" });
+  const userId = session.user.id;
+
   if (req.method === "GET") {
     const plant = await Plant.findById(id);
-
     if (!plant) return res.status(404).json({ message: "notfound" });
-
     return res.status(200).json(plant);
   } else if (req.method === "DELETE") {
     try {
@@ -19,11 +24,27 @@ export default async function handler(req, res) {
       res.status(500).json({ message: "Error deleting plant." });
     }
   } else if (req.method === "PUT") {
-    const updatedPlant = await Plant.findByIdAndUpdate(id, req.body, {
-      new: true,
-    });
-    if (!updatedPlant) return res.status(404).json({ message: "notfound" });
-    return res.status(200).json(updatedPlant);
+    try {
+      const plant = await Plant.findById(id);
+      if (!plant) return res.status(404).json({ message: "notfound" });
+
+      //Add user to ownedBy if not already present
+      if (!plant.ownedBy.includes(userId)) {
+        plant.ownedBy.push(userId);
+      } else {
+        //Remove user from ownedBy
+        plant.ownedBy = plant.ownedBy.filter(
+          (uid) => uid.toString() !== userId
+        );
+      }
+      await plant.save();
+      return res.status(200).json(plant);
+    } catch (error) {
+      console.error(error);
+      return res
+        .status(500)
+        .json({ message: "Error updating plant ownership." });
+    }
   }
 
   return res.status(405).json({ message: "Method not allowed" });
