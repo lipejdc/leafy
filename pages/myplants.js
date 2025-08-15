@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import useSWR, { mutate } from "swr";
 import Card from "@/components/Card/Card";
 import { getSession, useSession } from "next-auth/react";
 import { useOptimisticOwned } from "@/hooks/useOptimisticOwned";
