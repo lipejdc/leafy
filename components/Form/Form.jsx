@@ -1,8 +1,12 @@
 import { toast } from "sonner";
-import { FormContainer, PreviewWrapper, PreviewImg, CloseButton } from "./styles";
+import {
+  FormContainer,
+  PreviewWrapper,
+  PreviewImg,
+  CloseButton,
+} from "./styles";
 import { useState } from "react";
-import WaterNeedPicker from "../WaterNeedPicker/WaterNeedPicker";
-import LightNeedPicker from "../LightNeedPicker/LightNeedPicker";
+import NeedPicker from "../PlantNeeds/NeedPicker";
 
 const fertiliserSeasons = ["Spring", "Summer", "Autumn", "Winter"];
 
@@ -146,10 +150,20 @@ export default function Form({ onSubmit, initialValues = {} }) {
       )}
 
       <label>Water Need</label>
-      <WaterNeedPicker value={waterNeed} onChange={setWaterNeed} />
+      <NeedPicker
+        type="water"
+        levels={["Low", "Medium", "High"]}
+        value={waterNeed}
+        onChange={setWaterNeed}
+      />
 
       <label>Light Need</label>
-      <LightNeedPicker value={lightNeed} onChange={setLightNeed} />
+      <NeedPicker
+        type="light"
+        levels={["Shade", "Partial Shade", "Full Sun"]}
+        value={lightNeed}
+        onChange={setLightNeed}
+      />
 
       <label>Fertiliser Season</label>
       <div>
