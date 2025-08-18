@@ -28,6 +28,11 @@ export default async function handler(req, res) {
       const plant = await Plant.findById(id);
       if (!plant) return res.status(404).json({ message: "notfound" });
 
+      //Dynamically update all fields from req.body
+      Object.keys(req.body).forEach((key) => {
+        plant[key] = req.body[key];
+      });
+
       //Add user to ownedBy if not already present
       if (!plant.ownedBy.includes(userId)) {
         plant.ownedBy.push(userId);
