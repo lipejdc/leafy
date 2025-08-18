@@ -9,7 +9,7 @@ export default function NeedPicker({ type, levels, value, onChange }) {
   return (
     <Radiogroup role="radiogroup" aria-label={`${type} need`}>
       {levels.map((level, index) => {
-        const isSelected = value === level; // keep exact same selection logic
+        const isSelected = value === level;
 
         return (
           <RadioButton
@@ -22,8 +22,8 @@ export default function NeedPicker({ type, levels, value, onChange }) {
           >
             <Icon
               size={28}
-              fill={index <= levels.indexOf(value) ? activeColor : "none"} // same progressive fill
-              color={index <= levels.indexOf(value) ? activeColor : "#ccc"} // same stroke logic
+              fill={index <= levels.indexOf(value) ? activeColor : "none"}
+              color={index <= levels.indexOf(value) ? activeColor : "#ccc"}
             />
           </RadioButton>
         );
