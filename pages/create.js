@@ -2,6 +2,12 @@ import Form from "@/components/Form/Form";
 import { useRouter } from "next/router";
 import { mutate } from "swr";
 import { toast } from "sonner";
+import styled from "styled-components";
+
+const Heading = styled.h1`
+  text-align: center;
+  margin: 1rem 0;
+`;
 
 export default function CreatePlant() {
   const router = useRouter();
@@ -33,8 +39,7 @@ export default function CreatePlant() {
       <button type="button" onClick={() => router.back()}>
         ←
       </button>
-      <h1>Add a plant</h1>
-
+      <Heading>Add a plant</Heading>
       <Form onSubmit={addPlant} />
     </>
   );

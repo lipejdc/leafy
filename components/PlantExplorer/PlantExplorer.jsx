@@ -77,7 +77,7 @@ export default function PlantExplorer({
     <>
       <StyledButtonContainer>
         <Link href="/create">
-          <button>+ add Plant</button>
+          <button>+ Add Plant</button>
         </Link>
       </StyledButtonContainer>
 

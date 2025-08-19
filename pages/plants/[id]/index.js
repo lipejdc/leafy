@@ -1,6 +1,30 @@
 import useSWR from "swr";
 import { useRouter } from "next/router";
 import DetailCard from "@/components/DetailCard/DetailCard";
+import styled from "styled-components";
+
+const ButtonGroup = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+`;
+
+const ActionButton = styled.button`
+  background: var(--color-primary);
+  color: var(--color-white);
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1.2rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:hover {
+    background: var(--color-accent);
+    color: var(--color-text);
+  }
+`;
 
 export default function PlantDetail() {
   const router = useRouter();
@@ -27,8 +51,6 @@ export default function PlantDetail() {
       }
 
       alert("Plant deleted successfully!");
-
-      // Optionally redirect or show success message
       router.push("/");
     } catch (error) {
       console.error("Error deleting plant:", error);
@@ -44,11 +66,13 @@ export default function PlantDetail() {
 
       <DetailCard plant={plant} />
 
-      <button type="button" onClick={() => router.push(`/plants/${id}/edit`)}>
-        Edit
-      </button>
+      <ButtonGroup>
+        <ActionButton type="button" onClick={() => router.push(`/plants/${id}/edit`)}>
+          Edit
+        </ActionButton>
 
-      <button onClick={deletePlant}> delete Plant</button>
+        <ActionButton onClick={deletePlant}>Delete</ActionButton>
+      </ButtonGroup>
     </main>
   );
 }
