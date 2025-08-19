@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Link from "next/link";
 
 export const Header = styled.header`
-   background-image: linear-gradient(
+  background-image: linear-gradient(
       to bottom,
       rgba(0, 0, 0, 0.4),
       rgba(0, 0, 0, 0.2)
@@ -23,10 +23,17 @@ export const TopNav = styled.nav`
   position: absolute;
   top: 1.5rem;
   width: 100%;
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 0 2rem;
 `;
+
+export const NavLinksGroup = styled.div`
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+`
 
 export const NavLink = styled(Link)`
   color: white;
