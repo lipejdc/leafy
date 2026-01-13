@@ -1,11 +1,11 @@
-/** @type {import('next').NextConfig} */
 const nextConfig = {
-  compiler: {
-    styledComponents: true,
-  },
+  compiler: { styledComponents: true },
   reactStrictMode: true,
   images: {
-    domains: ["images.pexels.com", "res.cloudinary.com"],
+    remotePatterns: [
+      { protocol: "https", hostname: "images.pexels.com", port: "", pathname: "/**" },
+      { protocol: "https", hostname: "res.cloudinary.com", port: "", pathname: "/**" },
+    ],
   },
   webpack(config) {
     config.module.rules.push({
@@ -13,9 +13,9 @@ const nextConfig = {
       issuer: /\.[jt]sx?$/,
       use: ["@svgr/webpack"],
     });
-
     return config;
   },
+  turbopack: {}, // <-- add this
 };
 
 module.exports = nextConfig;
