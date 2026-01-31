@@ -1,10 +1,10 @@
 import GlobalStyle from "../styles";
-import { SWRConfig, mutate } from "swr";
+import { SWRConfig } from "swr";
 import Layout from "@/components/Layout/Layout";
 import { Toaster } from "sonner";
 import { SessionProvider } from "next-auth/react";
 
-const fetcher = async (...args) => {
+const fetcher = async (...args: [RequestInfo, RequestInit?]) : Promise<any> => {
   const response = await fetch(...args);
   if (!response.ok) {
     throw new Error(`Request with ${JSON.stringify(args)} failed.`);
